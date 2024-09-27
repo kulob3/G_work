@@ -44,11 +44,16 @@ class Client(models.Model):
         verbose_name_plural = 'Клиенты'
 
 class Sending(models.Model):
+    def default_sending_name():
+        return 'Рассылка от ' + datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+    name = models.CharField(max_length=150, verbose_name='Название рассылки', default=default_sending_name)
     datetime = models.DateTimeField(verbose_name='Дата и время первой отправки', auto_now_add=True)
     period = models.CharField(max_length=50, choices=PERIOD_CHOICES, verbose_name='Периодичность')
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, verbose_name='Статус рассылки')
     clients = models.ManyToManyField(Client, verbose_name='Клиенты')
     message = models.ForeignKey('Message', on_delete=models.CASCADE, verbose_name='Сообщение')
+    number_of_parcels = models.IntegerField(verbose_name='Количество писем', default=1)
 
     def save(self, *args, **kwargs):
         if not self.pk:

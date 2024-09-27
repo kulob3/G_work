@@ -1,0 +1,21 @@
+{% extends "sending/base.html" %}
+
+{% block content %}
+    {% for object in object_list %}
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">{{ object.name }}</h4>
+            </div>
+            <div class="card-body">
+                {% if object.status %}
+                    <h2 class="card-title pricing-card-title">Статус: {{ object.status }}</h2>
+                {% else %}
+                    <h2 class="card-title pricing-card-title">Not</h2>
+                {% endif %}
+                <h2 class="card-title pricing-card-title">Сообщение: {{ object.message }}</h2>
+
+                <a href="{% url 'sending:sending_view' object.pk %}" class="btn btn-lg btn-block btn-outline-primary">Просмотр</a>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
