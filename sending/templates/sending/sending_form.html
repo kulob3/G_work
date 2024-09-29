@@ -1,17 +1,14 @@
 {% extends 'sending/base.html' %}
 
 {% block content %}
-
-    <div class="card">
-        <div class="card-header">Create order {{ boat }}</div>
-        <div class="card-body">
-            <form method="post">
-                {% csrf_token %}
-                <input type="hidden" name="boat_id" value="{{ boat.pk }}">
+    <div class="container mt-5">
+        <h2 class="mb-4">Создание новой рассылки</h2>
+        <form method="post" class="needs-validation" novalidate enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
                 {{ form.as_p }}
-                <button type="submit" class="btn btn-primary">Create</button>
-            </form>
-        </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+        </form>
     </div>
-
 {% endblock %}

@@ -55,6 +55,8 @@ class Sending(models.Model):
     message = models.ForeignKey('Message', on_delete=models.CASCADE, verbose_name='Сообщение')
     number_of_parcels = models.IntegerField(verbose_name='Количество писем', default=1)
 
+
+
     def save(self, *args, **kwargs):
         if not self.pk:
             self.datetime = self.calculate_datetime()

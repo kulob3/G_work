@@ -6,13 +6,19 @@
         <div class="card-header">{{ object.name }}</div>
         <div class="card-body">
             <h2 class="card-title pricing-card-title">Статус: {{ object.status }}</h2>
+            <p> Начало отправки {{ object.datetime }}</p>
+            <p> Периодичность: {{ object.period }}</p>
+            <p> Статус: {{ object.status }}</p>
+            <p> Клиенты: {% for client in object.clients.all %}{{ client.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+            <p> Сообщение: {{ object.message }}</p>
+            <p> Количество писем: {{ object.number_of_parcels }}</p>
             <p>История попыток: {{ object.story_attempt }}</p>
 
 
         </div>
         <div class="card-footer">
-                <a href="{% url 'sending:edit' object.pk %}" class="btn btn-secondary">Редактировать</a>
-    <a href="{% url 'sending:delete' object.pk %}" class="btn btn-danger">Удалить</a>
+                <a href="{% url 'sending:sending_edit' object.pk %}" class="btn btn-secondary">Редактировать</a>
+    <a href="{% url 'sending:sending_delete' object.pk %}" class="btn btn-danger">Удалить</a>
         </div>
 
 {% endblock %}
