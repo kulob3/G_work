@@ -20,6 +20,7 @@
       <h5 class="my-0 mr-md-auto font-weight-normal">Сервис рассылок</h5>
       <nav class="my-2 my-md-0 mr-md-3">
         <a class="p-2 text-dark" href="{% url 'sending:sending_list' %}">Рассылки</a>
+          <a class="p-2 text-dark" href="{% url 'message:message_list' %}">Сообщения</a>
       </nav>
 {#      <a class="btn btn-outline-primary" href="#">Sign up</a>#}
     </div>
@@ -29,7 +30,7 @@
     </div>
     
     <a href="{% url 'sending:sending_create' %}" class="btn btn-lg btn-outline-primary">Создать рассылку</a>
-    <a href="#" class="btn btn-lg btn-outline-primary">Создать новое сообщение</a>
+    <a href="{% url 'message:message_create' %}" class="btn btn-lg btn-outline-primary">Создать новое сообщение</a>
     
     <br>
     <br>

@@ -7,9 +7,9 @@
             {% csrf_token %}
             <div class="mb-3">
             </div>
-            <h4>Delete {{ object.name }}?</h4>
+            <h4>Удалить {{ object.topic }}?</h4>
             <button type="submit" class="btn btn-primary">Да</button>
-            <a class="btn btn-primary" href="{% url 'sending:sending_view' object.pk %}">Нет</a>
+            <a class="btn btn-primary" href="{% url 'message:message_view' object.pk %}">Нет</a>
 
         </form>
     </div>

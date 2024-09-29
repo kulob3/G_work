@@ -28,7 +28,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'sending'
+    'sending',
+    'message',
 ]
 
 MIDDLEWARE = [
@@ -133,3 +134,9 @@ STATUS_CHOICES = [
     ('started', 'Запущена'),
     ('completed', 'Завершена'),
 ]
+
+EMAIL_HOST = 'smtp.mail.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = '9272060714@mail.ru'
+EMAIL_HOST_PASSWORD = 'kbkz3wCYvRLs2aS0Waq9'
+EMAIL_USE_SSL = True

@@ -52,7 +52,7 @@ class Sending(models.Model):
     period = models.CharField(max_length=50, choices=PERIOD_CHOICES, verbose_name='Периодичность')
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, verbose_name='Статус рассылки')
     clients = models.ManyToManyField(Client, verbose_name='Клиенты')
-    message = models.ForeignKey('Message', on_delete=models.CASCADE, verbose_name='Сообщение')
+    message = models.ForeignKey('message.Message', on_delete=models.CASCADE, verbose_name='Сообщение')
     number_of_parcels = models.IntegerField(verbose_name='Количество писем', default=1)
 
 
@@ -81,16 +81,7 @@ class Sending(models.Model):
         verbose_name = 'Рассылка'
         verbose_name_plural = 'Рассылки'
 
-class Message(models.Model):
-    topic = models.CharField(max_length=150, verbose_name='Тема письма')
-    body = models.TextField(verbose_name='Содержание письма')
 
-    def __str__(self):
-        return self.topic
-
-    class Meta:
-        verbose_name = 'Сообщение'
-        verbose_name_plural = 'Сообщения'
 
 class SendAttempt(models.Model):
     datetime = models.DateTimeField(verbose_name='Дата и время попытки', db_index=True)

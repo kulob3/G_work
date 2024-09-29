@@ -1,0 +1,12 @@
+{% extends "sending/base.html" %}
+
+{% block content %}
+    {% for object in object_list %}
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">{{ object.topic }}</h4>
+                <a href="{% url 'message:message_view' object.pk %}" class="btn btn-lg btn-block btn-outline-primary">Просмотр</a>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
