@@ -1,12 +1,7 @@
 from django.contrib import admin
 
-from sending.models import Sending, Client, SendAttempt
+from sending.models import Sending, SendAttempt
 
-
-@admin.register(Client)
-class ClientAdmin(admin.ModelAdmin):
-    list_display = ('email', 'name', 'comment')
-    search_fields = ('name',)
 
 @admin.register(Sending)
 class SendingAdmin(admin.ModelAdmin):

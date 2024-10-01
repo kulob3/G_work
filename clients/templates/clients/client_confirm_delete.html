@@ -1,0 +1,15 @@
+{% extends 'sending/base.html' %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h2 class="mb-4"></h2>
+        <form method="post" class="needs-validation" novalidate>
+            {% csrf_token %}
+            <div class="mb-3">
+            </div>
+            <h4>Удалить {{ object.name }}?</h4>
+            <button type="submit" class="btn btn-primary">Да</button>
+            <a class="btn btn-primary" href="{% url 'client:client_view' object.pk %}">Нет</a>
+        </form>
+    </div>
+{% endblock %}

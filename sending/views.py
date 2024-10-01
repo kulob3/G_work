@@ -1,18 +1,42 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.utils.text import slugify
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from sending.models import Sending
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
 
+from sending.models import Sending
+from sending.services import send_mailing
+
+
+@csrf_exempt
+@require_POST
+def start_all_mailings(request):
+    try:
+        send_mailing()
+        return JsonResponse({'status': 'success', 'message': 'Рассылки запущены'})
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)})
+
+@csrf_exempt
+def stop_all_mailings(request):
+    if request.method == 'POST':
+        # Logic to stop the mailings
+        # This could involve setting a flag or stopping a background process
+        return JsonResponse({'status': 'success', 'message': 'Рассылки остановлены'})
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
 
 class SendingListView(ListView):
     model = Sending
 
-    def get_queryset(self, *args, **kwargs):
-        queryset = super().get_queryset(*args, **kwargs)
-        queryset = queryset.filter(status='created')
-        return queryset
+
+
+    # def get_queryset(self, *args, **kwargs):
+    #     queryset = super().get_queryset(*args, **kwargs)
+    #     queryset = queryset.filter()
+    #     return queryset
 
 
 class SendingDetailView(DetailView):

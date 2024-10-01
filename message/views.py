@@ -8,7 +8,7 @@ from message.models import Message
 
 class MessageListView(ListView):
     model = Message
-    # template_name = 'message/message_list.html'
+    # template_name = 'message/client_list.html'
     # context_object_name = 'messages'
 
     def get_queryset(self):

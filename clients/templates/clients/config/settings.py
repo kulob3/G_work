@@ -31,7 +31,6 @@ INSTALLED_APPS = [
     'sending',
     'message',
     'django_crontab',
-    'clients',
 ]
 
 MIDDLEWARE = [

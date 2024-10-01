@@ -6,5 +6,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('sending.urls', namespace='sending')),
     path('message/', include('message.urls', namespace='message')),
-    path('clients/', include('clients.urls', namespace='client')),
 ]
