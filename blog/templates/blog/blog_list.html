@@ -1,0 +1,35 @@
+{% extends "sending/base.html" %}
+{% load media_filter %}
+
+{% block action_buttons %}
+{% endblock %}
+
+{% block content %}
+    <div class="d-flex justify-content-center mb-4">
+        <a href="{% url 'blog:blog_create' %}" class="btn btn-lg btn-primary mx-2" style="font-size: 1.2em; padding: 10px 20px;">
+            Создать новую запись
+        </a>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            {% for object in object_list %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card shadow-sm border-0 h-100 d-flex flex-column">
+                        <div class="card-header text-center bg-primary text-white">
+                            <h4 class="font-weight-normal">{{ object.title }}</h4>
+                        </div>
+                        <div class="card-body text-center">
+                            <img src="{{ object.preview|media_filter }}" alt="Preview" class="img-fluid mb-3" style="max-height: 200px; object-fit: cover;">
+                        </div>
+                        <div class="card-footer mt-auto text-center">
+                            <a href="{% url 'blog:blog_view' object.pk %}" class="btn btn-outline-primary btn-block">
+                                Просмотр
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

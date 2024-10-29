@@ -3,6 +3,7 @@ from django.urls import reverse_lazy, reverse
 from django.utils.text import slugify
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
+from message.forms import MessageForm
 from message.models import Message
 
 
@@ -20,7 +21,7 @@ class MessageDetailView(DetailView):
 
 class MessageCreateView(CreateView):
     model = Message
-    fields = "__all__"
+    form_class = MessageForm
     success_url = reverse_lazy('message:message_list')
 
     def form_valid(self, form):
@@ -32,7 +33,7 @@ class MessageCreateView(CreateView):
 
 class MessageUpdateView(UpdateView):
     model = Message
-    fields = '__all__'
+    form_class = MessageForm
 
     def get_success_url(self):
         return reverse('message:message_view', args=[self.kwargs.get('pk')])

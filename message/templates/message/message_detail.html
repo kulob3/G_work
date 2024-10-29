@@ -10,6 +10,7 @@
         <div class="card-footer">
             <a href="{% url 'message:message_edit' object.pk %}" class="btn btn-secondary">Редактировать</a>
             <a href="{% url 'message:message_delete' object.pk %}" class="btn btn-danger">Удалить</a>
+            <a href="{% url 'message:message_list' %}" class="btn btn-primary">Назад</a>
         </div>
 
 {% endblock %}

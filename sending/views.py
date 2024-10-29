@@ -7,6 +7,7 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 
+from sending.forms import SendingForm
 from sending.models import Sending
 from sending.services import send_mailing
 
@@ -23,20 +24,11 @@ def start_all_mailings(request):
 @csrf_exempt
 def stop_all_mailings(request):
     if request.method == 'POST':
-        # Logic to stop the mailings
-        # This could involve setting a flag or stopping a background process
         return JsonResponse({'status': 'success', 'message': 'Рассылки остановлены'})
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
 
 class SendingListView(ListView):
     model = Sending
-
-
-
-    # def get_queryset(self, *args, **kwargs):
-    #     queryset = super().get_queryset(*args, **kwargs)
-    #     queryset = queryset.filter()
-    #     return queryset
 
 
 class SendingDetailView(DetailView):
@@ -45,7 +37,7 @@ class SendingDetailView(DetailView):
 
 class SendingCreateView(CreateView):
     model = Sending
-    fields = "__all__"
+    form_class = SendingForm
     success_url = reverse_lazy('sending:sending_list')
 
     def form_valid(self, form):
@@ -57,7 +49,7 @@ class SendingCreateView(CreateView):
 
 class SendingUpdateView(UpdateView):
     model = Sending
-    fields = '__all__'
+    form_class = SendingForm
 
     def get_success_url(self):
         return reverse('sending:sending_view', args=[self.kwargs.get('pk')])
@@ -68,9 +60,6 @@ class SendingUpdateView(UpdateView):
             new_blog.slug = slugify(new_blog.name)
             new_blog.save()
         return super().form_valid(form)
-
-
-
 
 
 

@@ -11,6 +11,8 @@
         <div class="card-footer">
             <a href="{% url 'clients:client_edit' object.pk %}" class="btn btn-secondary">Редактировать</a>
             <a href="{% url 'clients:client_delete' object.pk %}" class="btn btn-danger">Удалить</a>
+            <a href="{% url 'clients:client_list' %}" class="btn btn-outline-dark">Назад</a>
         </div>
+    </div>
 
 {% endblock %}

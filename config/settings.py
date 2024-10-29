@@ -1,5 +1,4 @@
-
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -32,6 +31,7 @@ INSTALLED_APPS = [
     'message',
     'django_crontab',
     'clients',
+    'blog',
 ]
 
 MIDDLEWARE = [
@@ -119,6 +119,10 @@ STATICFILES_DIRS = (
     BASE_DIR / 'static',
 )
 
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
@@ -155,6 +159,8 @@ EMAIL_PORT = 465
 EMAIL_HOST_USER = '9272060714@mail.ru'
 EMAIL_HOST_PASSWORD = 'kbkz3wCYvRLs2aS0Waq9'
 EMAIL_USE_SSL = True
+SERVER_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
 NULLABLE = {'null': True, 'blank': True}

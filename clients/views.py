@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.template.defaultfilters import slugify
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+
+from clients.forms import ClientForm
 from clients.models import Client
 
 
@@ -17,7 +19,7 @@ class ClientDetailView(DetailView):
 
 class ClientCreateView(CreateView):
     model = Client
-    fields = "__all__"
+    form_class = ClientForm
     success_url = reverse_lazy('clients:client_list')
 
     def form_valid(self, form):
@@ -29,7 +31,7 @@ class ClientCreateView(CreateView):
 
 class ClientUpdateView(UpdateView):
     model = Client
-    fields = '__all__'
+    form_class = ClientForm
 
     def get_success_url(self):
         return reverse('client:client_view', args=[self.kwargs.get('pk')])

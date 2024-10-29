@@ -1,0 +1,23 @@
+{% extends 'sending/base.html' %}
+{% load media_filter %}
+{% block content %}
+
+    <div class="card">
+        <div class="card-header">{{ object.title }}</div>
+        <div class="card-body">
+            <img src="{{ object.preview|media_filter }}" alt="Preview">
+            <p> {{ object.content }}</p>
+            <p> Добавлено: {{ object.created_at }}</p>
+            <p> Количество просмотров: {{ object.views }}</p>
+
+
+
+        </div>
+        <div class="card-footer">
+            <a href="{% url 'blog:blog_edit' object.pk %}" class="btn btn-secondary">Редактировать</a>
+            <a href="{% url 'blog:blog_delete' object.pk %}" class="btn btn-danger">Удалить</a>
+            <a href="{% url 'blog:blog_list' %}" class="btn btn-outline-dark">Назад</a>
+        </div>
+    </div>
+
+{% endblock %}
