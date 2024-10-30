@@ -32,6 +32,8 @@ INSTALLED_APPS = [
     'django_crontab',
     'clients',
     'blog',
+    'users',
+    'phonenumber_field',
 ]
 
 MIDDLEWARE = [
@@ -164,3 +166,8 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
 NULLABLE = {'null': True, 'blank': True}
+
+AUTH_USER_MODEL = 'users.User'
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'

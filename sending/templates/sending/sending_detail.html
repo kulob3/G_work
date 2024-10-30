@@ -11,6 +11,7 @@
             <p> Клиенты: {% for client in object.clients.all %}{{ client.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
             <p> Сообщение: {{ object.message }}</p>
             <p> Количество писем: {{ object.number_of_parcels }}</p>
+            <p> Создано пользователем: {{ object.owner }}</p>
 
             <h3>Подробности попыток рассылки:</h3>
             <ul>

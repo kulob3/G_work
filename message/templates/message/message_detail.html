@@ -6,6 +6,7 @@
         <div class="card-header">Тема: {{ object.topic }}</div>
         <div class="card-body">
             <p> Сообщение: {{ object.body }}</p>
+            <p> Создано пользователем: {{ object.owner }}</p>
         </div>
         <div class="card-footer">
             <a href="{% url 'message:message_edit' object.pk %}" class="btn btn-secondary">Редактировать</a>
