@@ -185,4 +185,9 @@ MANAGER_PERMISSIONS = [
     ('unban_user', 'Can unban user')
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'users.backends.BannedUserBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 

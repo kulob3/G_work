@@ -7,7 +7,7 @@
         <div class="card-body">
             <p> Email: {{ object.email }}</p>
             <p> Комментарий: {{ object.comment }}</p>
-            <p> Создан пользователем: {{ object.owner }}</p>
+            <p> Обслуживается: {{ object.owner }}</p>
         </div>
         <div class="card-footer">
             <a href="{% url 'clients:client_edit' object.pk %}" class="btn btn-secondary">Редактировать</a>

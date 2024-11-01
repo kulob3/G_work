@@ -43,11 +43,13 @@ class SendingCreateView(CreateView):
     success_url = reverse_lazy('sending:sending_list')
 
     def form_valid(self, form):
+        form.instance.owner = self.request.user  # Set the owner to the current user
         if form.is_valid():
-            new_blog = form.save()
+            new_blog = form.save(commit=False)
             new_blog.slug = slugify(new_blog.name)
             new_blog.save()
         return super().form_valid(form)
+
 
 class SendingUpdateView(LoginRequiredMixin, UpdateView):
     model = Sending

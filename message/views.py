@@ -25,10 +25,11 @@ class MessageCreateView(CreateView):
     success_url = reverse_lazy('message:message_list')
 
     def form_valid(self, form):
+        form.instance.owner = self.request.user  # Set the owner to the current user
         if form.is_valid():
-            new_blog = form.save()
-            new_blog.slug = slugify(new_blog.topic)
-            new_blog.save()
+            new_message = form.save(commit=False)
+            new_message.slug = slugify(new_message.topic)  # Use 'topic' instead of 'name'
+            new_message.save()
         return super().form_valid(form)
 
 class MessageUpdateView(UpdateView):

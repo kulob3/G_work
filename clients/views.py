@@ -21,10 +21,11 @@ class ClientCreateView(CreateView):
     success_url = reverse_lazy('clients:client_list')
 
     def form_valid(self, form):
+        form.instance.owner = self.request.user
         if form.is_valid():
-            new_blog = form.save()
-            new_blog.slug = slugify(new_blog.name)
-            new_blog.save()
+            new_client = form.save()
+            new_client.slug = slugify(new_client.name)
+            new_client.save()
         return super().form_valid(form)
 
 class ClientUpdateView(UpdateView):

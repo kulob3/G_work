@@ -1,4 +1,6 @@
 import secrets
+
+from django.contrib.auth.views import LoginView
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, redirect, render
@@ -84,6 +86,14 @@ def password_reset_request(request):
 
 class UserListView(ListView):
     model = User
+
+class CustomLoginView(LoginView):
+    def form_valid(self, form):
+        user = form.get_user()
+        if user.banned:
+            messages.error(self.request, 'Вы забанены.')
+            return self.form_invalid(form)
+        return super().form_valid(form)
 
 
 @user_passes_test(lambda u: u.is_superuser or u.groups.filter(name='manager').exists())

@@ -16,7 +16,7 @@ class Sending(models.Model):
     clients = models.ManyToManyField(Client, verbose_name='Клиенты')
     message = models.ForeignKey('message.Message', on_delete=models.CASCADE, verbose_name='Сообщение')
     number_of_parcels = models.IntegerField(verbose_name='Количество писем', default=1)
-    owner = models.ForeignKey('users.User', on_delete=models.CASCADE, verbose_name='Владелец', related_name='sendings', **NULLABLE)
+    owner = models.ForeignKey('users.User', on_delete=models.CASCADE, verbose_name='Владелец', related_name='sendings', editable=False)
 
     def calculate_next_datetime(self):
         if self.period == 'minute':
