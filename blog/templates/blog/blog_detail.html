@@ -10,13 +10,12 @@
             <p> Добавлено: {{ object.created_at }}</p>
             <p> Автор: {{ object.owner }}</p>
             <p> Количество просмотров: {{ object.views }}</p>
-
-
-
         </div>
         <div class="card-footer">
-            <a href="{% url 'blog:blog_edit' object.pk %}" class="btn btn-secondary">Редактировать</a>
-            <a href="{% url 'blog:blog_delete' object.pk %}" class="btn btn-danger">Удалить</a>
+            {% if user == object.owner %}
+                <a href="{% url 'blog:blog_edit' object.pk %}" class="btn btn-secondary">Редактировать</a>
+                <a href="{% url 'blog:blog_delete' object.pk %}" class="btn btn-danger">Удалить</a>
+            {% endif %}
             <a href="{% url 'blog:blog_list' %}" class="btn btn-outline-dark">Назад</a>
         </div>
     </div>

@@ -10,7 +10,7 @@ class Blog(models.Model):
     preview = models.ImageField(upload_to='blog/photo', verbose_name='Изображение', help_text='Загрузите изображение')
     views = models.IntegerField(default=0, verbose_name='Количество просмотров')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата публикации')
-    owner = models.ForeignKey('users.User', on_delete=models.CASCADE, verbose_name='Владелец', related_name='blogs', **NULLABLE)
+    owner = models.ForeignKey('users.User', on_delete=models.CASCADE, verbose_name='Владелец', related_name='blog', editable=False)
 
     def __str__(self):
         return self.title
