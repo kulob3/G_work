@@ -1,5 +1,5 @@
 {% extends "sending/base.html" %}
-
+{% load custom_filters %}
 {% block content %}
 <div class="container mt-4">
     <div class="d-flex justify-content-between mb-3">
@@ -11,20 +11,39 @@
         <div class="col-md-12">
             <h1 class="h2">Список рассылок</h1>
         </div>
-        {% for object in object_list %}
-        <div class="col-md-4">
-            <div class="card mb-4 box-shadow">
-                <div class="card-header">
-                    <h4 class="my-0 font-weight-normal">{{ object.name }}</h4>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Статус: {{ object.get_status_display }}</h5>
-                    <p class="card-text">Тема сообщения: {{ object.message }}</p>
-                    <a href="{% url 'sending:sending_view' object.pk %}" class="btn btn-primary btn-block">Просмотр</a>
+        {% if user.is_superuser or user|has_manager_perms %}
+            {% for object in object_list %}
+            <div class="col-md-4">
+                <div class="card mb-4 box-shadow">
+                    <div class="card-header">
+                        <h4 class="my-0 font-weight-normal">{{ object.name }}</h4>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Статус: {{ object.get_status_display }}</h5>
+                        <p class="card-text">Тема сообщения: {{ object.message }}</p>
+                        <a href="{% url 'sending:sending_view' object.pk %}" class="btn btn-primary btn-block">Просмотр</a>
+                    </div>
                 </div>
             </div>
-        </div>
-        {% endfor %}
+            {% endfor %}
+        {% else %}
+            {% for object in object_list %}
+                {% if object.owner == user %}
+                <div class="col-md-4">
+                    <div class="card mb-4 box-shadow">
+                        <div class="card-header">
+                            <h4 class="my-0 font-weight-normal">{{ object.name }}</h4>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Статус: {{ object.get_status_display }}</h5>
+                            <p class="card-text">Тема сообщения: {{ object.message }}</p>
+                            <a href="{% url 'sending:sending_view' object.pk %}" class="btn btn-primary btn-block">Просмотр</a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
     </div>
 </div>
 <script>

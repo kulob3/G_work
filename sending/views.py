@@ -1,4 +1,5 @@
-from django.shortcuts import render, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.urls import reverse, reverse_lazy
 from django.utils.text import slugify
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -7,7 +8,8 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 
-from sending.forms import SendingForm
+from config.settings import MANAGER_PERMISSIONS
+from sending.forms import SendingForm, SendingManagerForm
 from sending.models import Sending
 from sending.services import send_mailing
 
@@ -47,7 +49,7 @@ class SendingCreateView(CreateView):
             new_blog.save()
         return super().form_valid(form)
 
-class SendingUpdateView(UpdateView):
+class SendingUpdateView(LoginRequiredMixin, UpdateView):
     model = Sending
     form_class = SendingForm
 
@@ -61,7 +63,13 @@ class SendingUpdateView(UpdateView):
             new_blog.save()
         return super().form_valid(form)
 
-
+    def get_form_class(self):
+        user = self.request.user
+        if user == self.object.owner or user.is_superuser:
+            return SendingForm
+        if user.groups.filter(name='manager').exists():
+            return SendingManagerForm
+        raise PermissionDenied
 
 class SendingDeleteView(DeleteView):
     model = Sending

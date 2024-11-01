@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy, reverse
 from django.utils.http import urlsafe_base64_encode
-from django.views.generic import CreateView
+from django.views.generic import CreateView, ListView
 from django.utils.encoding import force_bytes
 from config import settings
 from config.settings import EMAIL_HOST_USER
@@ -13,6 +13,8 @@ from users.forms import UserRegisterForm, PasswordResetRequestForm
 from users.models import User
 from django.contrib.auth.tokens import default_token_generator
 import string
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib import messages
 
 
 class UserCreateView(CreateView):
@@ -80,6 +82,40 @@ def password_reset_request(request):
     return render(request, "users/password_reset.html", {"form": form})
 
 
-from django.shortcuts import render
+class UserListView(ListView):
+    model = User
 
-# Create your views here.
+
+@user_passes_test(lambda u: u.is_superuser or u.groups.filter(name='manager').exists())
+def ban_user(request, user_id):
+    user_to_ban = get_object_or_404(User, pk=user_id)
+
+    if request.user.is_superuser:
+        if user_to_ban.is_superuser:
+            messages.error(request, 'Администратор не имеет права банить администраторов.')
+            return redirect('users:user_list')
+    elif request.user.groups.filter(name='manager').exists():
+        if user_to_ban.is_superuser or user_to_ban.groups.filter(name='manager').exists():
+            messages.error(request, 'Менеджер не имеет права банить администраторов или менеджеров.')
+            return redirect('users:user_list')
+
+    user_to_ban.banned = True
+    user_to_ban.save()
+    messages.success(request, f'Пользователь {user_to_ban.email} забанен.')
+    return redirect('users:user_list')
+
+@user_passes_test(lambda u: u.is_superuser or u.groups.filter(name='manager').exists())
+def unban_user(request, user_id):
+    user_to_unban = get_object_or_404(User, pk=user_id)
+
+    if request.user.is_superuser:
+        if user_to_unban.is_superuser:
+            return redirect('users:user_list')
+    elif request.user.groups.filter(name='manager').exists():
+        if user_to_unban.is_superuser or user_to_unban.groups.filter(name='manager').exists():
+            return redirect('users:user_list')
+
+    user_to_unban.banned = False
+    user_to_unban.save()
+    messages.success(request, f'Пользователь {user_to_unban.email} разбанен.')
+    return redirect('users:user_list')

@@ -121,6 +121,8 @@ STATICFILES_DIRS = (
     BASE_DIR / 'static',
 )
 
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -154,6 +156,7 @@ STATUS_CHOICES = [
     ('created', 'Создана'),
     ('started', 'Запущена'),
     ('completed', 'Завершена'),
+    ('canceled', 'Отменена'),
 ]
 
 EMAIL_HOST = 'smtp.mail.ru'
@@ -171,3 +174,15 @@ AUTH_USER_MODEL = 'users.User'
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+MANAGER_PERMISSIONS = [
+    ('custom_view_sending', 'Can view sending'),
+    ('canceled_sending', 'Can cancel sending'),
+    ('uncanceled_sending', 'Can uncancel sending'),
+    ('view_user_list', 'Can view user list'),
+    ('custom_view_user', 'Can view user'),
+    ('ban_user', 'Can ban user'),
+    ('unban_user', 'Can unban user')
+]
+
+

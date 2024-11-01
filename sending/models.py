@@ -1,7 +1,6 @@
 from django.db import models
 from datetime import datetime, timedelta
-from config.settings import PERIOD_CHOICES, STATUS_CHOICES
-from config.settings import NULLABLE
+from config.settings import PERIOD_CHOICES, STATUS_CHOICES, NULLABLE, MANAGER_PERMISSIONS
 from clients.models import Client
 
 
@@ -13,7 +12,7 @@ class Sending(models.Model):
     name = models.CharField(max_length=150, verbose_name='Название рассылки', default=default_sending_name)
     datetime = models.DateTimeField(verbose_name='Дата и время первой отправки', auto_now_add=True)
     period = models.CharField(max_length=50, choices=PERIOD_CHOICES, verbose_name='Периодичность')
-    status = models.CharField(max_length=50, choices=STATUS_CHOICES, verbose_name='Статус рассылки')
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, verbose_name='Статус рассылки', default='created')
     clients = models.ManyToManyField(Client, verbose_name='Клиенты')
     message = models.ForeignKey('message.Message', on_delete=models.CASCADE, verbose_name='Сообщение')
     number_of_parcels = models.IntegerField(verbose_name='Количество писем', default=1)
@@ -36,6 +35,7 @@ class Sending(models.Model):
     class Meta:
         verbose_name = 'Рассылка'
         verbose_name_plural = 'Рассылки'
+        permissions = MANAGER_PERMISSIONS
 
 
 

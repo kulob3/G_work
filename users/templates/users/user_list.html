@@ -1,0 +1,31 @@
+{% extends "sending/base.html" %}
+{% load users_filter %}
+
+{% block content %}
+    {% if user.is_superuser or user|has_manager_perms %}
+        {% for object in object_list %}
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">{{ object.email }}</h4>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Имя: {{ object.first_name }}</h5>
+                    <p class="card-text">Фамилия: {{ object.last_name }}</p>
+                    {% if object.banned %}<p class="card-text"> Пользователь забанен! </p>{% endif %}
+                    <form method="post" action="{% url 'users:ban_user' object.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Забанить</button>
+                    </form>
+                    {% if object.banned %}
+                    <form method="post" action="{% url 'users:unban_user' object.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success">Разбанить</button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>У вас нет прав для просмотра информации на этой странице</p>
+    {% endif %}
+{% endblock %}

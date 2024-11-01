@@ -1,12 +1,25 @@
 {% extends "sending/base.html" %}
-
+{% load message_filters %}
 {% block content %}
-    {% for object in object_list %}
-        <div class="card mb-4 box-shadow">
-            <div class="card-header">
-                <h4 class="my-0 font-weight-normal">{{ object.topic }}</h4>
-                <a href="{% url 'message:message_view' object.pk %}" class="btn btn-lg btn-block btn-outline-primary">Просмотр</a>
+    {% if user.is_superuser or user|has_manager_perms %}
+        {% for object in object_list %}
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">{{ object.topic }}</h4>
+                    <a href="{% url 'message:message_view' object.pk %}" class="btn btn-lg btn-block btn-outline-primary">Просмотр</a>
+                </div>
             </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
+    {% else %}
+        {% for object in object_list %}
+            {% if object.owner == user %}
+                <div class="card mb-4 box-shadow">
+                    <div class="card-header">
+                        <h4 class="my-0 font-weight-normal">{{ object.topic }}</h4>
+                        <a href="{% url 'message:message_view' object.pk %}" class="btn btn-lg btn-block btn-outline-primary">Просмотр</a>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
 {% endblock %}

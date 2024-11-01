@@ -19,3 +19,8 @@ class SendingForm(StyleFormMixin, ModelForm):
     class Meta:
         model = Sending
         fields = '__all__'
+
+class SendingManagerForm(StyleFormMixin, ModelForm):
+    class Meta:
+        model = Sending
+        fields = ['status']

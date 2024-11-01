@@ -1,7 +1,7 @@
 from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from config.settings import NULLABLE
+from config.settings import NULLABLE, MANAGER_PERMISSIONS
 
 
 class User(AbstractUser):
@@ -13,6 +13,7 @@ class User(AbstractUser):
     avatar = models.ImageField(verbose_name='Фото', upload_to='users/avatars/', **NULLABLE)
     country = models.CharField(max_length=150, verbose_name = 'Страна', **NULLABLE)
     token = models.CharField(max_length=150, verbose_name='token', **NULLABLE)
+    banned = models.BooleanField(default=False, verbose_name='Пользователь забанен')
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -20,6 +21,7 @@ class User(AbstractUser):
     class Meta:
         verbose_name = 'User'
         verbose_name_plural = 'Users'
+        permissions = MANAGER_PERMISSIONS
 
     def __str__(self):
         return self.email
