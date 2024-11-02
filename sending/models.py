@@ -37,6 +37,16 @@ class Sending(models.Model):
         verbose_name_plural = 'Рассылки'
         permissions = MANAGER_PERMISSIONS
 
+class MailingStatus(models.Model):
+    is_running = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"Mailing is {'running' if self.is_running else 'stopped'}"
+
+    class Meta:
+        verbose_name = 'Статус рассылки'
+        verbose_name_plural = 'Статусы рассылок'
+
 
 
 class SendAttempt(models.Model):

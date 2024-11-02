@@ -3,14 +3,11 @@ from django.core.exceptions import PermissionDenied
 from django.urls import reverse, reverse_lazy
 from django.utils.text import slugify
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
-
-from config.settings import MANAGER_PERMISSIONS
 from sending.forms import SendingForm, SendingManagerForm
-from sending.models import Sending
+from sending.models import Sending, MailingStatus
 from sending.services import send_mailing
 
 
@@ -18,16 +15,32 @@ from sending.services import send_mailing
 @require_POST
 def start_all_mailings(request):
     try:
+        status = MailingStatus.objects.first()
+        if status:
+            status.is_running = True
+            status.save()
+        else:
+            MailingStatus.objects.create(is_running=True)
         send_mailing()
         return JsonResponse({'status': 'success', 'message': 'Рассылки запущены'})
     except Exception as e:
         return JsonResponse({'status': 'error', 'message': str(e)})
 
 @csrf_exempt
+@require_POST
 def stop_all_mailings(request):
-    if request.method == 'POST':
-        return JsonResponse({'status': 'success', 'message': 'Рассылки остановлены'})
-    return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+    status = MailingStatus.objects.first()
+    if status:
+        status.is_running = False
+        status.save()
+    return JsonResponse({'status': 'success', 'message': 'Рассылки остановлены'})
+
+
+def get_mailing_status(request):
+    status = MailingStatus.objects.first()
+    if status and status.is_running:
+        return JsonResponse({'status': 'running', 'message': 'Рассылки запущены'})
+    return JsonResponse({'status': 'stopped', 'message': 'Рассылки остановлены'})
 
 class SendingListView(ListView):
     model = Sending

@@ -4,13 +4,19 @@ from django.conf import settings
 from django.core.mail import send_mail
 from datetime import datetime
 import pytz
-from sending.models import Sending, SendAttempt
+from sending.models import Sending, SendAttempt, MailingStatus
 
 logger = logging.getLogger(__name__)
 
 def send_mailing(pytz=pytz):
-    print("Рассылки запущены")
+    print(f"Рассылки запущены {datetime.now()}")
     while True:
+        # Check if mailings are running
+        status = MailingStatus.objects.first()
+        if not status or not status.is_running:
+            print(f"Рассылки остановлены {status} {datetime.now()}")
+            break
+
         zone = pytz.timezone(settings.TIME_ZONE)
         current_datetime = datetime.now(zone)
 

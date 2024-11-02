@@ -1,88 +1,104 @@
 {% extends "sending/base.html" %}
 {% load custom_filters %}
 {% block content %}
-<div class="container mt-4">
-    <div class="d-flex justify-content-between mb-3">
-        {% if user is authenticated or user.is_superuser %}
-        <button id="start-mailing-btn" class="btn btn-success">Запуск рассылок</button>
-        <button id="stop-mailing-btn" class="btn btn-danger">Остановка рассылок</button>
-        {% endif %}
-    </div>
-    <div id="mailing-status"></div>
-    <div class="row">
-        <div class="col-md-12">
-            <h1 class="h2">Список рассылок</h1>
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between mb-3">
+            {% if user is authenticated or user.is_superuser %}
+                <button id="start-mailing-btn" class="btn btn-success" style="background-color: #71dd8a; color: white; border: none;">Запуск рассылок</button>
+<button id="stop-mailing-btn" class="btn btn-danger" style="background-color: red; color: white; border: none;">Остановка рассылок</button>
+            {% endif %}
         </div>
-        {% if user.is_superuser or user|has_manager_perms %}
-            {% for object in object_list %}
-            <div class="col-md-4">
-                <div class="card mb-4 box-shadow">
-                    <div class="card-header">
-                        <h4 class="my-0 font-weight-normal">{{ object.name }}</h4>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Статус: {{ object.get_status_display }}</h5>
-                        <p class="card-text">Тема сообщения: {{ object.message }}</p>
-                        <a href="{% url 'sending:sending_view' object.pk %}" class="btn btn-primary btn-block">Просмотр</a>
-                    </div>
-                </div>
+        <div id="mailing-status"></div>
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="h2">Список рассылок</h1>
             </div>
-            {% endfor %}
-        {% else %}
-            {% for object in object_list %}
-                {% if object.owner == user %}
-                <div class="col-md-4">
-                    <div class="card mb-4 box-shadow">
-                        <div class="card-header">
-                            <h4 class="my-0 font-weight-normal">{{ object.name }}</h4>
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">Статус: {{ object.get_status_display }}</h5>
-                            <p class="card-text">Тема сообщения: {{ object.message }}</p>
-                            <a href="{% url 'sending:sending_view' object.pk %}" class="btn btn-primary btn-block">Просмотр</a>
+            {% if user.is_superuser or user|has_manager_perms %}
+                {% for object in object_list %}
+                    <div class="col-md-4">
+                        <div class="card mb-4 box-shadow">
+                            <div class="card-header">
+                                <h4 class="my-0 font-weight-normal">{{ object.name }}</h4>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">Статус: {{ object.get_status_display }}</h5>
+                                <p class="card-text">Тема сообщения: {{ object.message }}</p>
+                                <a href="{% url 'sending:sending_view' object.pk %}" class="btn btn-primary btn-block">Просмотр</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                {% endif %}
-            {% endfor %}
-        {% endif %}
+                {% endfor %}
+            {% else %}
+                {% for object in object_list %}
+                    {% if object.owner == user %}
+                        <div class="col-md-4">
+                            <div class="card mb-4 box-shadow">
+                                <div class="card-header">
+                                    <h4 class="my-0 font-weight-normal">{{ object.name }}</h4>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">Статус: {{ object.get_status_display }}</h5>
+                                    <p class="card-text">Тема сообщения: {{ object.message }}</p>
+                                    <a href="{% url 'sending:sending_view' object.pk %}"
+                                       class="btn btn-primary btn-block">Просмотр</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </div>
     </div>
-</div>
-<script>
-    document.getElementById('start-mailing-btn').addEventListener('click', function() {
-        fetch("{% url 'sending:start_all_mailings' %}", {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': '{{ csrf_token }}',
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            const statusDiv = document.getElementById('mailing-status');
-            if (data.status === 'success') {
-                statusDiv.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
-            } else {
-                statusDiv.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
-            }
-        })
-        .catch(error => {
-            document.getElementById('mailing-status').innerHTML = `<div class="alert alert-danger">An error occurred: ${error}</div>`;
+    <script>
+        document.getElementById('start-mailing-btn').addEventListener('click', function () {
+            fetch("{% url 'sending:start_all_mailings' %}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const statusDiv = document.getElementById('mailing-status');
+                    if (data.status === 'success') {
+                        statusDiv.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
+                    } else {
+                        statusDiv.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('mailing-status').innerHTML = `<div class="alert alert-danger">An error occurred: ${error}</div>`;
+                });
         });
-    });
 
-    document.getElementById('stop-mailing-btn').addEventListener('click', function() {
-        fetch("{% url 'sending:stop_all_mailings' %}", {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': '{{ csrf_token }}',
-                'Content-Type': 'application/json'
-            }
-        })
+        document.getElementById('stop-mailing-btn').addEventListener('click', function () {
+            fetch("{% url 'sending:stop_all_mailings' %}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const statusDiv = document.getElementById('mailing-status');
+                    if (data.status === 'success') {
+                        statusDiv.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
+                    } else {
+                        statusDiv.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('mailing-status').innerHTML = `<div class="alert alert-danger">An error occurred: ${error}</div>`;
+                });
+        });
+        function fetchMailingStatus() {
+        fetch("{% url 'sending:get_mailing_status' %}")
         .then(response => response.json())
         .then(data => {
             const statusDiv = document.getElementById('mailing-status');
-            if (data.status === 'success') {
+            if (data.status === 'running') {
                 statusDiv.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
             } else {
                 statusDiv.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
@@ -91,6 +107,8 @@
         .catch(error => {
             document.getElementById('mailing-status').innerHTML = `<div class="alert alert-danger">An error occurred: ${error}</div>`;
         });
-    });
-</script>
+    }
+    
+        setInterval(fetchMailingStatus, 5000);
+    </script>
 {% endblock %}
