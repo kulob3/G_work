@@ -3,9 +3,13 @@
 {% block content %}
     <div class="container mt-4">
         <div class="d-flex justify-content-between mb-3">
-            {% if user is authenticated or user.is_superuser %}
-                <button id="start-mailing-btn" class="btn btn-success" style="background-color: #71dd8a; color: white; border: none;">Запуск рассылок</button>
-<button id="stop-mailing-btn" class="btn btn-danger" style="background-color: red; color: white; border: none;">Остановка рассылок</button>
+            {% if user.is_authenticated or user.is_superuser %}
+                <button id="start-mailing-btn" class="btn btn-success"
+                        style="background-color: #71dd8a; color: white; border: none;">Запуск рассылок
+                </button>
+                <button id="stop-mailing-btn" class="btn btn-danger"
+                        style="background-color: red; color: white; border: none;">Остановка рассылок
+                </button>
             {% endif %}
         </div>
         <div id="mailing-status"></div>
@@ -93,22 +97,23 @@
                     document.getElementById('mailing-status').innerHTML = `<div class="alert alert-danger">An error occurred: ${error}</div>`;
                 });
         });
+
         function fetchMailingStatus() {
-        fetch("{% url 'sending:get_mailing_status' %}")
-        .then(response => response.json())
-        .then(data => {
-            const statusDiv = document.getElementById('mailing-status');
-            if (data.status === 'running') {
-                statusDiv.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
-            } else {
-                statusDiv.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
-            }
-        })
-        .catch(error => {
-            document.getElementById('mailing-status').innerHTML = `<div class="alert alert-danger">An error occurred: ${error}</div>`;
-        });
-    }
-    
+            fetch("{% url 'sending:get_mailing_status' %}")
+                .then(response => response.json())
+                .then(data => {
+                    const statusDiv = document.getElementById('mailing-status');
+                    if (data.status === 'running') {
+                        statusDiv.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
+                    } else {
+                        statusDiv.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('mailing-status').innerHTML = `<div class="alert alert-danger">An error occurred: ${error}</div>`;
+                });
+        }
+
         setInterval(fetchMailingStatus, 5000);
     </script>
 {% endblock %}

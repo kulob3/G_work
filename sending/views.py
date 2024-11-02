@@ -1,11 +1,15 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
+from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from django.utils.text import slugify
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
+
+from blog.models import Blog
+from clients.models import Client
 from sending.forms import SendingForm, SendingManagerForm
 from sending.models import Sending, MailingStatus
 from sending.services import send_mailing
@@ -92,3 +96,17 @@ class SendingDeleteView(DeleteView):
     extra_context = {
         'title': 'Delete Sending'
     }
+
+def home(request):
+    total_mailings = Sending.objects.count()
+    active_mailings = Sending.objects.filter(status='active').count()
+    unique_clients = Client.objects.distinct().count()
+    random_articles = Blog.objects.order_by('?')[:3]
+
+    context = {
+        'total_mailings': total_mailings,
+        'active_mailings': active_mailings,
+        'unique_clients': unique_clients,
+        'random_articles': random_articles,
+    }
+    return render(request, 'sending/home.html', context)

@@ -2,7 +2,8 @@
 
 {% block content %}
     <div class="container mt-5">
-        <h2 class="mb-4">Создание новой рассылки</h2>
+        <h2 class="mb-4">{% if form.instance.pk %}Редактирование рассылки{% else %}Создание новой
+            рассылки{% endif %}</h2>
         <form method="post" class="needs-validation" novalidate enctype="multipart/form-data">
             {% csrf_token %}
             <div class="mb-3">

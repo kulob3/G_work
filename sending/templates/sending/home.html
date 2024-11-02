@@ -1,0 +1,27 @@
+{% extends "sending/base.html" %}
+{% load media_filter %}
+{% block content %}
+    {% block action_buttons %}
+    {% endblock %}
+    <div class="container mt-4">
+        <h1>Добро пожаловать в сервис почтовых рассылок</h1>
+        <p>Количество рассылок всего: {{ total_mailings }}</p>
+        <p>Количество активных рассылок: {{ active_mailings }}</p>
+        <p>Количество уникальных клиентов для рассылок: {{ unique_clients }}</p>
+        <h2>Наш блог: </h2>
+        <ul>
+            {% for article in random_articles %}
+                <div class="card mb-3">
+                    <div class="card-header text-center bg-primary text-white">
+                        <li class="list-unstyled"><a href="{% url 'blog:blog_view' article.pk %}"
+                                                     class="text-white">{{ article.title }}</a></li>
+                    </div>
+                    <div class="card-body text-center">
+                        <img src="{{ article.preview|media_filter }}" alt="Preview" class="img-fluid mb-3"
+                             style="max-height: 200px; object-fit: cover;">
+                    </div>
+                </div>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
