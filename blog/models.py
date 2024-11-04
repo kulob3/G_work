@@ -1,7 +1,5 @@
 from django.db import models
 
-from config.settings import NULLABLE
-
 
 class Blog(models.Model):
     title = models.CharField(max_length=150, verbose_name='Заголовок', help_text='Введите заголовок блога')

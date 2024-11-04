@@ -13,7 +13,7 @@
             {% for article in random_articles %}
                 <div class="card mb-3">
                     <div class="card-header text-center bg-primary text-white">
-                        <li class="list-unstyled"><a href="{% url 'blog:blog_view' article.pk %}"
+                        <li class="list-unstyled"><a href="{% url 'blog:blog_view' article.pk %}?from=home"
                                                      class="text-white">{{ article.title }}</a></li>
                     </div>
                     <div class="card-body text-center">

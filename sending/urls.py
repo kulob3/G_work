@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.decorators.cache import cache_page
 
 from sending.apps import SendingConfig
 from sending.views import SendingListView, SendingDetailView, SendingCreateView, SendingUpdateView, SendingDeleteView, \
@@ -7,7 +8,7 @@ from . import views
 app_name = SendingConfig.name
 
 urlpatterns = [
-    path('', home, name='home'),
+    path('', cache_page(60)(home), name='home'),
     path('list/', SendingListView.as_view(), name='sending_list'),
     path('<int:pk>/', SendingDetailView.as_view(), name='sending_view'),
     path('create/', SendingCreateView.as_view(), name='sending_create'),

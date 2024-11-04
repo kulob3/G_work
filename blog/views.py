@@ -34,6 +34,9 @@ class BlogListView(ListView):
 
 class BlogDetailView(DetailView):
     model = Blog
+    # template_name = 'blog/blog_view.html'
+    # context_object_name = 'blog'
+
 
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset=queryset)
