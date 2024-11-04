@@ -1,6 +1,5 @@
 {% load static %}
 {% load custom_filters %}
-<!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -59,8 +58,7 @@
                         <a class="nav-link btn btn-outline-primary mx-1" href="{% url 'message:message_list' %}">Сообщения</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link btn btn-outline-primary mx-1"
-                           href="{% url 'clients:client_list' %}">Клиенты</a>
+                        <a class="nav-link btn btn-outline-primary mx-1" href="{% url 'clients:client_list' %}">Клиенты</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link btn btn-outline-primary mx-1" href="{% url 'blog:blog_list' %}">Блог</a>
@@ -81,35 +79,31 @@
                         <a class="nav-link btn btn-outline-success mx-1" href="{% url 'users:login' %}">Войти</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link btn btn-outline-primary mx-1"
-                           href="{% url 'users:register' %}">Регистрация</a>
+                        <a class="nav-link btn btn-outline-primary mx-1" href="{% url 'users:register' %}">Регистрация</a>
                     </li>
                 {% endif %}
             </ul>
         </div>
     </div>
 </nav>
-</div>
-</header>
 <div class="container">
     {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li class="{{ message.tags }}">{{ message }}</li>
-            {% endfor %}
-        </ul>
+    <ul class="messages">
+        {% for message in messages %}
+        <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
     {% endif %}
     <div class="text-center mb-4">
         <h1 class="display-4">{{ title }}</h1>
     </div>
     <div class="d-flex justify-content-center mb-4 action-buttons">
         {% if user.is_authenticated or user.is_superuser %}
-            {% block action_buttons %}
-                <a href="{% url 'sending:sending_create' %}" class="btn btn-lg btn-outline-primary">Создать рассылку</a>
-                <a href="{% url 'message:message_create' %}" class="btn btn-lg btn-outline-primary">Создать
-                    сообщение</a>
-                <a href="{% url 'clients:client_create' %}" class="btn btn-lg btn-outline-primary">Добавить клиента</a>
-            {% endblock %}
+        {% block action_buttons %}
+        <a href="{% url 'sending:sending_create' %}" class="btn btn-lg btn-outline-primary">Создать рассылку</a>
+        <a href="{% url 'message:message_create' %}" class="btn btn-lg btn-outline-primary">Создать сообщение</a>
+        <a href="{% url 'clients:client_create' %}" class="btn btn-lg btn-outline-primary">Добавить клиента</a>
+        {% endblock %}
         {% endif %}
     </div>
     <div class="card-deck mb-3 text-center">

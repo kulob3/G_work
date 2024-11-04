@@ -1,4 +1,5 @@
 import secrets
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
@@ -31,6 +32,7 @@ class UserCreateView(CreateView):
         user.save()
         host = self.request.get_host()
         url = f'http://{host}/users/email-confirm/{token}/'
+        print(url)
         send_mail(
             subject='Email confirmation',
             message=f'Click on the link to confirm your email: {url}',
@@ -85,7 +87,7 @@ def password_reset_request(request):
     return render(request, "users/password_reset.html", {"form": form})
 
 
-class UserListView(ListView):
+class UserListView(LoginRequiredMixin, ListView):
     model = User
 
 class CustomLoginView(LoginView):

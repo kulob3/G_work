@@ -8,8 +8,8 @@ from users.views import UserCreateView, email_verification, password_reset_reque
 app_name = UsersConfig.name
 
 urlpatterns = [
-    path('login/', CustomLoginView.as_view(template_name='users/login.html'), name='login'),
-    path('logout/', LogoutView.as_view(), name='logout'),
+    path('login/', CustomLoginView.as_view(template_name='users/login.html', next_page='/'), name='login'),
+    path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
     path('register/', UserCreateView.as_view(), name='register'),
     path('email-confirm/<str:token>/', email_verification, name='email-confirm'),
     path('password-reset/', password_reset_request, name='password_reset'),

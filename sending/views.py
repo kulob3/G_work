@@ -48,15 +48,15 @@ def get_mailing_status(request):
         return JsonResponse({'status': 'running', 'message': 'Рассылки запущены'})
     return JsonResponse({'status': 'stopped', 'message': 'Рассылки остановлены'})
 
-class SendingListView(ListView):
+class SendingListView(LoginRequiredMixin, ListView):
     model = Sending
 
 
-class SendingDetailView(DetailView):
+class SendingDetailView(LoginRequiredMixin, DetailView):
     model = Sending
 
 
-class SendingCreateView(CreateView):
+class SendingCreateView(LoginRequiredMixin, CreateView):
     model = Sending
     form_class = SendingForm
     success_url = reverse_lazy('sending:sending_list')
@@ -64,10 +64,17 @@ class SendingCreateView(CreateView):
     def form_valid(self, form):
         form.instance.owner = self.request.user  # Set the owner to the current user
         if form.is_valid():
-            new_blog = form.save(commit=False)
-            new_blog.slug = slugify(new_blog.name)
-            new_blog.save()
+            new_sending = form.save(commit=False)
+            new_sending.slug = slugify(new_sending.name)
+            new_sending.save()
         return super().form_valid(form)
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields['clients'].queryset = Client.objects.filter(owner=self.request.user)
+        return form
+
+
 
 
 class SendingUpdateView(LoginRequiredMixin, UpdateView):
