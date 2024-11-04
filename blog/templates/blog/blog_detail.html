@@ -15,7 +15,7 @@
             <p> Количество просмотров: {{ object.views }}</p>
         </div>
         <div class="card-footer">
-            {% if user == object.owner %}
+            {% if user == object.owner or user.is_superuser %}
                 <a href="{% url 'blog:blog_edit' object.pk %}" class="btn btn-secondary">Редактировать</a>
                 <a href="{% url 'blog:blog_delete' object.pk %}" class="btn btn-danger">Удалить</a>
             {% endif %}

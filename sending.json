@@ -1,0 +1,155 @@
+[
+  {
+    "model": "sending.sending",
+    "pk": 1,
+    "fields": {
+      "name": "Рассылка от 2024-10-30 17:07:48",
+      "datetime": "2024-10-30T13:10:02.865Z",
+      "period": "minute",
+      "status": "canceled",
+      "message": 1,
+      "number_of_parcels": 2,
+      "owner": 2,
+      "clients": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "sending.sending",
+    "pk": 2,
+    "fields": {
+      "name": "Рассылка от 2024-10-31 16:25:02",
+      "datetime": "2024-10-31T12:25:22.527Z",
+      "period": "minute",
+      "status": "canceled",
+      "message": 1,
+      "number_of_parcels": 1,
+      "owner": 2,
+      "clients": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "sending.sending",
+    "pk": 3,
+    "fields": {
+      "name": "Рассылка от 2024-11-01 11:45:07",
+      "datetime": "2024-11-01T07:45:40.241Z",
+      "period": "minute",
+      "status": "created",
+      "message": 1,
+      "number_of_parcels": 1,
+      "owner": 4,
+      "clients": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "sending.sending",
+    "pk": 5,
+    "fields": {
+      "name": "Рассылка от 2024-11-01 15:38:09",
+      "datetime": "2024-11-01T11:38:16.588Z",
+      "period": "minute",
+      "status": "created",
+      "message": 1,
+      "number_of_parcels": 1,
+      "owner": 2,
+      "clients": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "sending.sending",
+    "pk": 6,
+    "fields": {
+      "name": "Рассылка от 2024-11-02 10:23:01",
+      "datetime": "2024-11-02T06:27:18.832Z",
+      "period": "minute",
+      "status": "canceled",
+      "message": 1,
+      "number_of_parcels": 4,
+      "owner": 1,
+      "clients": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "sending.mailingstatus",
+    "pk": 1,
+    "fields": {
+      "is_running": false
+    }
+  },
+  {
+    "model": "sending.sendattempt",
+    "pk": 1,
+    "fields": {
+      "datetime": "2024-10-31T10:59:33.009Z",
+      "status": true,
+      "response": "Email sent successfully",
+      "sending": 1,
+      "story_attempt": "Не было рассылки пока"
+    }
+  },
+  {
+    "model": "sending.sendattempt",
+    "pk": 2,
+    "fields": {
+      "datetime": "2024-10-31T11:00:35.498Z",
+      "status": true,
+      "response": "Email sent successfully",
+      "sending": 1,
+      "story_attempt": "Не было рассылки пока"
+    }
+  },
+  {
+    "model": "sending.sendattempt",
+    "pk": 3,
+    "fields": {
+      "datetime": "2024-11-02T06:23:32.690Z",
+      "status": true,
+      "response": "Email sent successfully",
+      "sending": 6,
+      "story_attempt": "Не было рассылки пока"
+    }
+  },
+  {
+    "model": "sending.sendattempt",
+    "pk": 4,
+    "fields": {
+      "datetime": "2024-11-02T06:24:34.755Z",
+      "status": true,
+      "response": "Email sent successfully",
+      "sending": 6,
+      "story_attempt": "Не было рассылки пока"
+    }
+  },
+  {
+    "model": "sending.sendattempt",
+    "pk": 5,
+    "fields": {
+      "datetime": "2024-11-02T06:29:37.756Z",
+      "status": true,
+      "response": "Email sent successfully",
+      "sending": 6,
+      "story_attempt": "Не было рассылки пока"
+    }
+  },
+  {
+    "model": "sending.sendattempt",
+    "pk": 6,
+    "fields": {
+      "datetime": "2024-11-02T06:37:31.004Z",
+      "status": true,
+      "response": "Email sent successfully",
+      "sending": 6,
+      "story_attempt": "Не было рассылки пока"
+    }
+  }
+]

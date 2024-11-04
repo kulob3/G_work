@@ -1,0 +1,70 @@
+[
+  {
+    "model": "users.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$KmeM8m4hn8OahVUdPk6GoI$1r4Ac51P8k4R2u6mWVhHOFocQ5mJwvXY7tMHCq8+6ek=",
+      "last_login": "2024-11-03T08:52:10.363Z",
+      "is_superuser": true,
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2024-10-30T07:58:11.467Z",
+      "email": "adm@1.ru",
+      "first_name": null,
+      "last_name": null,
+      "phone": null,
+      "avatar": "",
+      "country": null,
+      "token": null,
+      "banned": false,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$cmneWeANR1X41yJNla25uD$+f0qrZQni9nx02I3MjOzBKQeLP0M/5fjngjwS8X538Y=",
+      "last_login": "2024-11-04T06:19:45.604Z",
+      "is_superuser": false,
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-10-30T08:13:36Z",
+      "email": "kulob1@mail.ru",
+      "first_name": "Petr",
+      "last_name": "Petrov",
+      "phone": "+00000000000",
+      "avatar": "",
+      "country": "РФ",
+      "token": "b8ce594ae2a5c2d76cb80153634a70f9",
+      "banned": false,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.user",
+    "pk": 4,
+    "fields": {
+      "password": "pbkdf2_sha256$600000$D0JFpHgzCmLHWYDEIuzkqV$aaQhhtZLC+2adzuS3d0Q6TqpbzCiTEqIqVuHkxpaGQ4=",
+      "last_login": "2024-11-02T07:32:54.105Z",
+      "is_superuser": false,
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2024-10-31T11:17:40Z",
+      "email": "kulob3@yandex.ru",
+      "first_name": "Ivan",
+      "last_name": "ivanov",
+      "phone": "+0000000000",
+      "avatar": "",
+      "country": "РФ",
+      "token": "b30d79356c8061820e4441ba98b8073b",
+      "banned": false,
+      "groups": [
+        1
+      ],
+      "user_permissions": []
+    }
+  }
+]

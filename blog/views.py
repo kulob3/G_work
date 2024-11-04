@@ -13,6 +13,7 @@ class BlogCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('blog:blog_list')
 
     def form_valid(self, form):
+        form.instance.owner = self.request.user
         if form.is_valid():
             new_blog = form.save()
             new_blog.slug = slugify(new_blog.title)
@@ -24,12 +25,11 @@ class BlogListView(ListView):
     template_name = 'blog/blog_list.html'
     context_object_name = 'blogs'
     # Remove or update the following line if it references `is_published`
-    queryset = Blog.objects.all()  # Update this line if necessary
+    # queryset = Blog.objects.all()  # Update this line if necessary
 
-    # def get_queryset(self, *args, **kwargs):
-    #     queryset = super().get_queryset(*args, **kwargs)
-    #     queryset = queryset.filter(is_published=True)
-    #     return queryset
+    def get_queryset(self, *args, **kwargs):
+        queryset = super().get_queryset(*args, **kwargs)
+        return queryset
 
 
 class BlogDetailView(DetailView):
