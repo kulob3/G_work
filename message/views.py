@@ -1,19 +1,16 @@
-from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.utils.text import slugify
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-
 from message.forms import MessageForm
 from message.models import Message
 
 
 class MessageListView(ListView):
     model = Message
-    # template_name = 'message/client_list.html'
-    # context_object_name = 'messages'
 
     def get_queryset(self):
         return Message.objects.all()
+
 
 class MessageDetailView(DetailView):
     model = Message
@@ -25,12 +22,13 @@ class MessageCreateView(CreateView):
     success_url = reverse_lazy('message:message_list')
 
     def form_valid(self, form):
-        form.instance.owner = self.request.user  # Set the owner to the current user
+        form.instance.owner = self.request.user
         if form.is_valid():
             new_message = form.save(commit=False)
-            new_message.slug = slugify(new_message.topic)  # Use 'topic' instead of 'name'
+            new_message.slug = slugify(new_message.topic)
             new_message.save()
         return super().form_valid(form)
+
 
 class MessageUpdateView(UpdateView):
     model = Message
@@ -45,6 +43,7 @@ class MessageUpdateView(UpdateView):
             new_blog.slug = slugify(new_blog.topic)
             new_blog.save()
         return super().form_valid(form)
+
 
 class MessageDeleteView(DeleteView):
     model = Message

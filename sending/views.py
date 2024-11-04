@@ -7,7 +7,6 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
-
 from blog.models import Blog
 from clients.models import Client
 from sending.forms import SendingForm, SendingManagerForm
@@ -18,6 +17,7 @@ from sending.services import send_mailing
 @csrf_exempt
 @require_POST
 def start_all_mailings(request):
+    """Запуск всех рассылок через страницу"""
     try:
         status = MailingStatus.objects.first()
         if status:
@@ -33,6 +33,7 @@ def start_all_mailings(request):
 @csrf_exempt
 @require_POST
 def stop_all_mailings(request):
+    """Остановка всех рассылок через страницу"""
     status = MailingStatus.objects.first()
     if status:
         status.is_running = False
@@ -41,6 +42,7 @@ def stop_all_mailings(request):
 
 
 def get_mailing_status(request):
+    """Получение статуса рассылок для отображения на странице"""
     status = MailingStatus.objects.first()
     if status and status.is_running:
         return JsonResponse({'status': 'running', 'message': 'Рассылки запущены'})
@@ -98,6 +100,7 @@ class SendingDeleteView(DeleteView):
     }
 
 def home(request):
+    """Получение общей информации для главной страницы"""
     total_mailings = Sending.objects.count()
     active_mailings = Sending.objects.filter(status='active').count()
     unique_clients = Client.objects.distinct().count()

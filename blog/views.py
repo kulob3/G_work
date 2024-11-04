@@ -2,7 +2,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy, reverse
 from django.utils.text import slugify
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
-
 from blog.forms import BlogForm
 from blog.models import Blog
 
@@ -24,8 +23,6 @@ class BlogListView(ListView):
     model = Blog
     template_name = 'blog/blog_list.html'
     context_object_name = 'blogs'
-    # Remove or update the following line if it references `is_published`
-    # queryset = Blog.objects.all()  # Update this line if necessary
 
     def get_queryset(self, *args, **kwargs):
         queryset = super().get_queryset(*args, **kwargs)
@@ -34,9 +31,6 @@ class BlogListView(ListView):
 
 class BlogDetailView(DetailView):
     model = Blog
-    # template_name = 'blog/blog_view.html'
-    # context_object_name = 'blog'
-
 
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset=queryset)

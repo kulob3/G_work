@@ -1,7 +1,5 @@
 from django.db import models
 
-from config.settings import NULLABLE
-
 
 class Message(models.Model):
     topic = models.CharField(max_length=150, verbose_name='Тема письма')

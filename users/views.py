@@ -1,5 +1,4 @@
 import secrets
-
 from django.contrib.auth.views import LoginView
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
@@ -49,11 +48,13 @@ def email_verification(request, token):
 
 
 def generate_random_password(length=12):
+    """Функция для генерации случайного пароля"""
     characters = string.ascii_letters + string.digits + string.punctuation
     return ''.join(secrets.choice(characters) for i in range(length))
 
 
 def password_reset_request(request):
+    """Функция для сброса пароля"""
     if request.method == "POST":
         form = PasswordResetRequestForm(request.POST)
         if form.is_valid():
@@ -88,6 +89,7 @@ class UserListView(ListView):
     model = User
 
 class CustomLoginView(LoginView):
+    """Класс для авторизации пользователя, не позволяет забаненным пользователям авторизоваться"""
     def form_valid(self, form):
         user = form.get_user()
         if user.banned:
@@ -98,6 +100,7 @@ class CustomLoginView(LoginView):
 
 @user_passes_test(lambda u: u.is_superuser or u.groups.filter(name='manager').exists())
 def ban_user(request, user_id):
+    """Проверка полномочий перед баном"""
     user_to_ban = get_object_or_404(User, pk=user_id)
 
     if request.user.is_superuser:
@@ -116,6 +119,7 @@ def ban_user(request, user_id):
 
 @user_passes_test(lambda u: u.is_superuser or u.groups.filter(name='manager').exists())
 def unban_user(request, user_id):
+    """Проверка полномочий перед разбаном"""
     user_to_unban = get_object_or_404(User, pk=user_id)
 
     if request.user.is_superuser:

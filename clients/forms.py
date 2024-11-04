@@ -14,7 +14,6 @@ class StyleFormMixin:
 
 
 
-
 class ClientForm(StyleFormMixin, ModelForm):
     class Meta:
         model = Client

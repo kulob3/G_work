@@ -8,12 +8,13 @@ from clients.models import Client
 class ClientListView(ListView):
     model = Client
 
-
     def get_queryset(self):
         return Client.objects.all()
 
+
 class ClientDetailView(DetailView):
     model = Client
+
 
 class ClientCreateView(CreateView):
     model = Client
@@ -28,6 +29,7 @@ class ClientCreateView(CreateView):
             new_client.save()
         return super().form_valid(form)
 
+
 class ClientUpdateView(UpdateView):
     model = Client
     form_class = ClientForm
@@ -41,6 +43,7 @@ class ClientUpdateView(UpdateView):
             new_blog.slug = slugify(new_blog.name)
             new_blog.save()
         return super().form_valid(form)
+
 
 class ClientDeleteView(DeleteView):
     model = Client

@@ -9,10 +9,12 @@ from sending.models import Sending, SendAttempt, MailingStatus
 logger = logging.getLogger(__name__)
 
 def send_mailing(pytz=pytz):
+    """Функция для отправки рассылок"""
     print(f"Рассылки запущены {datetime.now()}")
     while True:
-        # Check if mailings are running
+        # Проверка статуса рассылки, если она остановлена, завершить работу
         status = MailingStatus.objects.first()
+        print(f"Current status: {status}")
         if not status or not status.is_running:
             print(f"Рассылки остановлены {status} {datetime.now()}")
             break

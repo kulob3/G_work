@@ -4,6 +4,7 @@ from users.models import User
 
 
 class Command(BaseCommand):
+    help = 'Создание суперпользователя'
     def handle(self, *args, **options):
         user = User.objects.create(email = 'adm@1.ru')
         user.set_password('admin')
