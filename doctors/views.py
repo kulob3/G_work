@@ -9,6 +9,7 @@ from django.shortcuts import render
 
 class DoctorListView(LoginRequiredMixin, ListView):
     model = Doctor
+    template_name = 'doctors/doctor_list.html'
 
     def get_queryset(self):
         return Doctor.objects.all()
