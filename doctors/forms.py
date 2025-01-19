@@ -1,5 +1,5 @@
 from django.forms import ModelForm, BooleanField
-from message.models import Message
+from doctors.models import Doctor
 
 
 class StyleFormMixin:
@@ -16,5 +16,5 @@ class StyleFormMixin:
 
 class DoctorForm(StyleFormMixin, ModelForm):
     class Meta:
-        model = Message
+        model = Doctor
         fields = '__all__'

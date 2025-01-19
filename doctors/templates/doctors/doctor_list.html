@@ -5,7 +5,7 @@
         {% for object in object_list %}
             <div class="card mb-4 box-shadow">
                 <div class="card-header">
-                    <h4 class="my-0 font-weight-normal">{{ object.first_name }}</h4>
+                    <h4 class="my-0 font-weight-normal">{{ object.first_name }} {{ object.last_name }}</h4>
                     <a href="{% url 'doctors:doctor_view' object.pk %}" class="btn btn-lg btn-block btn-outline-primary">Просмотр</a>
                 </div>
             </div>
@@ -15,7 +15,7 @@
             {% if object.owner == user %}
                 <div class="card mb-4 box-shadow">
                     <div class="card-header">
-                        <h4 class="my-0 font-weight-normal">{{ object.first_name }}</h4>
+                        <h4 class="my-0 font-weight-normal">{{ object.first_name }} {{ object.last_name }}</h4>
                         <a href="{% url 'doctors:doctor_view' object.pk %}" class="btn btn-lg btn-block btn-outline-primary">Просмотр</a>
                     </div>
                 </div>
