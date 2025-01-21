@@ -8,7 +8,7 @@ class Doctor(models.Model):
     last_name = models.CharField(max_length=150, verbose_name='Фамилия', **NULLABLE)
     speciality = models.CharField(max_length=150, verbose_name='Специальность', **NULLABLE)
     bio = models.TextField(verbose_name='Биография', **NULLABLE)
-    photo = models.ImageField(upload_to='doctors/photo', verbose_name='Фото', **NULLABLE)
+    photo = models.ImageField(upload_to='service/photo', verbose_name='Фото', **NULLABLE)
 
 
     def __str__(self):

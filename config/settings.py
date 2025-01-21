@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'blog',
     'users',
     'doctors',
+    'service',
     'phonenumber_field',
 ]
 

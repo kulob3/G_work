@@ -11,6 +11,7 @@ urlpatterns = [
     path('blog/', include('blog.urls', namespace='blog')),
     path('users/', include('users.urls', namespace='users')),
     path('doctors/', include('doctors.urls', namespace='doctors')),
+    path('service/', include('service.urls', namespace='service')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

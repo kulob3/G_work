@@ -17,18 +17,34 @@ class ClientDetailView(LoginRequiredMixin, DetailView):
     model = Client
 
 
+from django.shortcuts import redirect, render
+
 class ClientCreateView(LoginRequiredMixin, CreateView):
     model = Client
     form_class = ClientForm
     success_url = reverse_lazy('clients:client_list')
 
+    def get_initial(self):
+        initial = super().get_initial()
+        initial.update({
+            'first_name': self.request.user.first_name,
+            'last_name': self.request.user.last_name,
+        })
+        return initial
+
     def form_valid(self, form):
-        form.instance.owner = self.request.user
-        if form.is_valid():
-            new_client = form.save()
-            new_client.slug = slugify(new_client.name)
-            new_client.save()
-        return super().form_valid(form)
+        # Проверяем, существует ли уже клиент для текущего пользователя
+        if Client.objects.filter(email=self.request.user).exists():
+            form.add_error(None, 'A client with this email already exists.')
+            return self.form_invalid(form)
+
+        # Создаем клиента, связывая его с текущим пользователем
+        client = form.save(commit=False)
+        client.email = self.request.user  # Привязываем клиента к текущему пользователю
+        client.first_name = self.request.user.first_name
+        client.last_name = self.request.user.last_name
+        client.save()
+        return redirect(self.success_url)
 
 
 class ClientUpdateView(LoginRequiredMixin, UpdateView):
@@ -36,14 +52,14 @@ class ClientUpdateView(LoginRequiredMixin, UpdateView):
     form_class = ClientForm
 
     def get_success_url(self):
-        return reverse('client:client_view', args=[self.kwargs.get('pk')])
+        return reverse('clients:client_view', args=[self.object.pk])
 
     def form_valid(self, form):
-        if form.is_valid():
-            new_blog = form.save()
-            new_blog.slug = slugify(new_blog.name)
-            new_blog.save()
-        return super().form_valid(form)
+        client = form.save(commit=False)
+        client.first_name = form.cleaned_data['first_name']
+        client.last_name = form.cleaned_data['last_name']
+        client.save()
+        return redirect(self.get_success_url())
 
 
 class ClientDeleteView(LoginRequiredMixin, DeleteView):

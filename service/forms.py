@@ -1,6 +1,5 @@
-from django.forms import ModelForm, BooleanField, DateInput
-
-from clients.models import Client
+from django.forms import ModelForm, BooleanField
+from service.models import Service
 
 
 class StyleFormMixin:
@@ -11,14 +10,11 @@ class StyleFormMixin:
                 field.widget.attrs['class'] = 'form-check-input'
             else:
                 field.widget.attrs['class'] = 'form-control'
-            if field_name == 'date_of_birth':
-                field.widget = DateInput(attrs={'type': 'date'})
 
 
 
 
-
-class ClientForm(StyleFormMixin, ModelForm):
+class ServiceForm(StyleFormMixin, ModelForm):
     class Meta:
-        model = Client
-        exclude = ['email']
+        model = Service
+        fields = '__all__'

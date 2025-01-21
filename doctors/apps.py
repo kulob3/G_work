@@ -1,4 +1,4 @@
-# doctors/apps.py
+# service/apps.py
 from django.apps import AppConfig
 
 

@@ -11,9 +11,10 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=150, verbose_name='Фамилия', **NULLABLE)
     phone = PhoneNumberField(unique=True, verbose_name='Номер телефона', **NULLABLE)
     avatar = models.ImageField(verbose_name='Фото', upload_to='users/avatars/', **NULLABLE)
-    country = models.CharField(max_length=150, verbose_name = 'Страна', **NULLABLE)
     token = models.CharField(max_length=150, verbose_name='token', **NULLABLE)
     banned = models.BooleanField(default=False, verbose_name='Пользователь забанен')
+    is_manager = models.BooleanField(default=False, verbose_name='Менеджер')
+    is_client = models.BooleanField(default=True, verbose_name='Клиент')
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

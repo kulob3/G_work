@@ -4,7 +4,6 @@ from django.utils.text import slugify
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from doctors.forms import DoctorForm
 from doctors.models import Doctor
-from django.shortcuts import render
 
 
 class DoctorListView(LoginRequiredMixin, ListView):
@@ -52,6 +51,6 @@ class DoctorDeleteView(LoginRequiredMixin, DeleteView):
     model = Doctor
     success_url = reverse_lazy('doctors:doctor_list')
     extra_context = {
-        'title': 'Delete doctors'
+        'title': 'Delete service'
     }
 

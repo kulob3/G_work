@@ -1,0 +1,16 @@
+{% extends 'sending/base.html' %}
+{% block content %}
+    <div class="card">
+        <div class="card-header">Услуга: {{ object.name }}</div>
+        <div class="card-body">
+            <p> Стоимость: {{ object.price }}</p>
+            <p> Продолжительность: {{ object.duration }}</p>
+            <p> Описание: {{ object.description }}</p>
+        </div>
+        <div class="card-footer">
+            <a href="{% url 'service:service_edit' object.pk %}" class="btn btn-secondary">Редактировать</a>
+            <a href="{% url 'service:service_delete' object.pk %}" class="btn btn-danger">Удалить</a>
+            <a href="{% url 'service:service_list' %}" class="btn btn-primary">Назад</a>
+        </div>
+    </div>
+{% endblock %}

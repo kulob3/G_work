@@ -26,9 +26,9 @@ def start_all_mailings(request):
         else:
             MailingStatus.objects.create(is_running=True)
         send_mailing()
-        return JsonResponse({'status': 'success', 'doctors': 'Рассылки запущены'})
+        return JsonResponse({'status': 'success', 'service': 'Рассылки запущены'})
     except Exception as e:
-        return JsonResponse({'status': 'error', 'doctors': str(e)})
+        return JsonResponse({'status': 'error', 'service': str(e)})
 
 @csrf_exempt
 @require_POST
@@ -38,15 +38,15 @@ def stop_all_mailings(request):
     if status:
         status.is_running = False
         status.save()
-    return JsonResponse({'status': 'success', 'doctors': 'Рассылки остановлены'})
+    return JsonResponse({'status': 'success', 'service': 'Рассылки остановлены'})
 
 
 def get_mailing_status(request):
     """Получение статуса рассылок для отображения на странице"""
     status = MailingStatus.objects.first()
     if status and status.is_running:
-        return JsonResponse({'status': 'running', 'doctors': 'Рассылки запущены'})
-    return JsonResponse({'status': 'stopped', 'doctors': 'Рассылки остановлены'})
+        return JsonResponse({'status': 'running', 'service': 'Рассылки запущены'})
+    return JsonResponse({'status': 'stopped', 'service': 'Рассылки остановлены'})
 
 class SendingListView(LoginRequiredMixin, ListView):
     model = Sending

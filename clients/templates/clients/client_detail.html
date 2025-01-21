@@ -3,11 +3,11 @@
 {% block content %}
 
     <div class="card">
-        <div class="card-header">Наименование клиента: {{ object.name }}</div>
+        <div class="card-header"> Клиент: {{ object.first_name }} {{ object.last_name }}</div>
         <div class="card-body">
-            <p> Email: {{ object.email }}</p>
+            <p> Пол: {% if object.gender == 'M' %}Мужской{% elif object.gender == 'F' %}Женский{% else %}{{ object.gender }}{% endif %}</p>
+            <p> Дата рождения: {{ object.date_of_birth }}</p>
             <p> Комментарий: {{ object.comment }}</p>
-            <p> Обслуживается: {{ object.owner }}</p>
         </div>
         <div class="card-footer">
             <a href="{% url 'clients:client_edit' object.pk %}" class="btn btn-secondary">Редактировать</a>
