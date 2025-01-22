@@ -1,0 +1,22 @@
+{% extends 'sending/base.html' %}
+{% load blog_filter %}
+{% block content %}
+
+    <div class="card">
+        <div class="card-header"> Прием врача: {{ object.name }}</div>
+        <div class="card-body">
+            <p> Клиент: {{ object.client }}</p>
+            <p> Услуга: {{ object.service }}</p>
+            <p> Дата: {{ object.date }}</p>
+            <p> Время: {{ object.time }}</p>
+            <p> Статус: {{ object.status }}</p>
+            <p> Комментарий: {{ object.comment }}</p>
+        </div>
+        <div class="card-footer">
+            <a href="{% url 'appointment:appointment_edit' object.pk %}" class="btn btn-secondary">Редактировать</a>
+            <a href="{% url 'appointment:appointment_delete' object.pk %}" class="btn btn-danger">Удалить</a>
+            <a href="{% url 'appointment:appointment_list' %}" class="btn btn-outline-dark">Назад</a>
+        </div>
+    </div>
+
+{% endblock %}

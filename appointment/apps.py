@@ -1,8 +1,6 @@
-# service/apps.py
 from django.apps import AppConfig
 
 
-class DoctorsConfig(AppConfig):
+class AppointmentConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'doctors'
-
+    name = 'appointment'

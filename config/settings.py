@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'users',
     'doctors',
     'service',
+    'appointment',
     'phonenumber_field',
 ]
 
@@ -192,3 +193,10 @@ if CACHE_ENABLED:
             'LOCATION': os.getenv('LOCATION')
         }
     }
+
+APPOINTMENT_STATUS_CHOICES = [
+    ('new', 'Новый'),
+    ('confirmed', 'Подтвержден'),
+    ('canceled', 'Отменен'),
+    ('completed', 'Завершен')
+]

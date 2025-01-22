@@ -3,7 +3,6 @@ from config.settings import NULLABLE
 
 
 class Doctor(models.Model):
-    email = models.ForeignKey('users.User', on_delete=models.CASCADE, verbose_name='Email', related_name='doctor_email')
     first_name = models.CharField(max_length=150, verbose_name='Имя', **NULLABLE)
     last_name = models.CharField(max_length=150, verbose_name='Фамилия', **NULLABLE)
     speciality = models.CharField(max_length=150, verbose_name='Специальность', **NULLABLE)

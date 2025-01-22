@@ -23,13 +23,13 @@ class DoctorCreateView(LoginRequiredMixin, CreateView):
     form_class = DoctorForm
     success_url = reverse_lazy('doctors:doctor_list')
 
-    def form_valid(self, form):
-        form.instance.owner = self.request.user
-        if form.is_valid():
-            new_doctor = form.save(commit=False)
-            new_doctor.slug = slugify(new_doctor.email)
-            new_doctor.save()
-        return super().form_valid(form)
+    # def form_valid(self, form):
+    #     form.instance.owner = self.request.user
+    #     if form.is_valid():
+    #         new_doctor = form.save(commit=False)
+    #         new_doctor.slug = slugify(new_doctor.email)
+    #         new_doctor.save()
+    #     return super().form_valid(form)
 
 
 class DoctorUpdateView(LoginRequiredMixin, UpdateView):

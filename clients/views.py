@@ -1,9 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.template.defaultfilters import slugify
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from clients.forms import ClientForm
 from clients.models import Client
+from django.shortcuts import redirect
 
 
 class ClientListView(LoginRequiredMixin, ListView):
@@ -15,9 +15,6 @@ class ClientListView(LoginRequiredMixin, ListView):
 
 class ClientDetailView(LoginRequiredMixin, DetailView):
     model = Client
-
-
-from django.shortcuts import redirect, render
 
 class ClientCreateView(LoginRequiredMixin, CreateView):
     model = Client
