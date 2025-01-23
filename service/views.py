@@ -6,14 +6,14 @@ from service.forms import ServiceForm
 from service.models import Service
 
 
-class ServiceListView(LoginRequiredMixin, ListView):
+class ServiceListView(ListView):
     model = Service
 
     def get_queryset(self):
         return Service.objects.all()
 
 
-class ServiceDetailView(LoginRequiredMixin, DetailView):
+class ServiceDetailView(DetailView):
     model = Service
 
 

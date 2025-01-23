@@ -9,9 +9,11 @@ from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 from blog.models import Blog
 from clients.models import Client
+from doctors.models import Doctor
 from sending.forms import SendingForm, SendingManagerForm
 from sending.models import Sending, MailingStatus
 from sending.services import send_mailing
+from service.models import Service
 
 
 @csrf_exempt
@@ -112,11 +114,15 @@ def home(request):
     active_mailings = Sending.objects.filter(status='active').count()
     unique_clients = Client.objects.distinct().count()
     random_articles = Blog.objects.order_by('?')[:3]
+    total_doctors = Doctor.objects.count()
+    total_services = Service.objects.count()
 
     context = {
         'total_mailings': total_mailings,
         'active_mailings': active_mailings,
         'unique_clients': unique_clients,
         'random_articles': random_articles,
+        'total_doctors': total_doctors,  # Add total_doctors to the context
+        'total_services': total_services,  # Add total_services to the context
     }
     return render(request, 'sending/home.html', context)

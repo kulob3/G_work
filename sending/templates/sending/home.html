@@ -5,10 +5,10 @@
     {% block action_buttons %}
     {% endblock %}
     <div class="container mt-4">
-        <h1>Добро пожаловать в сервис почтовых рассылок</h1>
-        <p>Количество рассылок всего: {{ total_mailings }}</p>
-        <p>Количество активных рассылок: {{ active_mailings }}</p>
-        <p>Количество уникальных клиентов для рассылок: {{ unique_clients }}</p>
+        <h1>Добро пожаловать на сайт медицинской клиники "Тест"</h1>
+        <p>У нас работает: {{ total_doctors }} врачей</p>
+        <p>Мы оказываем {{ total_services}} медицинских услуг</p>
+        <p> {{ unique_clients }} человек стали нашими клиентами</p>
         <h2>Наш блог: </h2>
         <ul>
             {% for article in random_articles %}

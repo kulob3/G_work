@@ -1,7 +1,7 @@
 {% extends "sending/base.html" %}
-{% load doctor_filters %}
+{% load service_filters %}
 {% block content %}
-    {% if user.is_authenticated %}
+    {% if user.is_authenticated and user.is_superuser or user|has_manager_perms %}
         <div class="d-flex justify-content-center mb-4">
             <a href="{% url 'service:service_create' %}" class="btn btn-lg btn-primary mx-2"
                style="font-size: 1.2em; padding: 10px 20px;">
@@ -12,14 +12,16 @@
 
     <div class="container">
          <div class="row">
-    <div class="doctor-list">
-            {% for object in object_list %}
-                <div class="card mb-4 box-shadow">
-                    <div class="card-header">
-                        <h4 class="my-0 font-weight-normal"> {{ object.name }} </h4>
-                        <a href="{% url 'service:service_view' object.pk %}" class="btn btn-lg btn-block btn-outline-primary">Просмотр</a>
+            <div class="doctor-list">
+                {% for object in object_list %}
+                    <div class="card mb-4 box-shadow">
+                        <div class="card-header">
+                            <h4 class="my-0 font-weight-normal"> {{ object.name }} </h4>
+                            <a href="{% url 'service:service_view' object.pk %}" class="btn btn-lg btn-block btn-outline-primary">Просмотр</a>
+                        </div>
                     </div>
-                </div>
-            {% endfor %}
-
+                {% endfor %}
+            </div>
+         </div>
+    </div>
 {% endblock %}
