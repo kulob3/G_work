@@ -2,7 +2,7 @@ from django.db import models
 from config.settings import NULLABLE, APPOINTMENT_STATUS_CHOICES
 from doctors.models import Doctor
 from service.models import Service
-
+from clients.models import Client
 
 # Функция для default
 def default_appointment_name():

@@ -14,7 +14,7 @@ class User(AbstractUser):
     token = models.CharField(max_length=150, verbose_name='token', **NULLABLE)
     banned = models.BooleanField(default=False, verbose_name='Пользователь забанен')
     is_manager = models.BooleanField(default=False, verbose_name='Менеджер')
-    is_client = models.BooleanField(default=True, verbose_name='Клиент')
+    is_client = models.BooleanField(default=False, verbose_name='Клиент')
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

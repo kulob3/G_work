@@ -107,13 +107,6 @@
         <h1 class="display-4">{{ title }}</h1>
     </div>
     <div class="d-flex justify-content-center mb-4 action-buttons">
-        {% if user.is_authenticated or user.is_superuser %}
-        {% block action_buttons %}
-        <a href="{% url 'sending:sending_create' %}" class="btn btn-lg btn-outline-primary">Создать рассылку</a>
-        <a href="{% url 'message:message_create' %}" class="btn btn-lg btn-outline-primary">Создать сообщение</a>
-        <a href="{% url 'clients:client_create' %}" class="btn btn-lg btn-outline-primary">Добавить клиента</a>
-        {% endblock %}
-        {% endif %}
     </div>
     <div class="card-deck mb-3 text-center">
         {% block content %}

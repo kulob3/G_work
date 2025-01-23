@@ -9,8 +9,9 @@
             <p> Услуга: {{ object.service }}</p>
             <p> Дата: {{ object.date }}</p>
             <p> Время: {{ object.time }}</p>
-            <p> Статус: {{ object.status }}</p>
+            <p> Статус: {{ object.get_status_display }}</p>
             <p> Комментарий: {{ object.comment }}</p>
+            <p> Результат: {{ object.result }}</p>
         </div>
         <div class="card-footer">
             <a href="{% url 'appointment:appointment_edit' object.pk %}" class="btn btn-secondary">Редактировать</a>

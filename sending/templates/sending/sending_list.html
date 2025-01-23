@@ -1,6 +1,14 @@
 {% extends "sending/base.html" %}
 {% load custom_filters %}
 {% block content %}
+        <div class="d-flex justify-content-center mb-4">
+        {% if user.is_authenticated %}
+            <a href="{% url 'sending:sending_create' %}" class="btn btn-lg btn-primary mx-2"
+               style="font-size: 1.2em; padding: 10px 20px;">
+            Создать новую рассылку
+        {% endif %}
+        </a>
+    </div>
     <div class="container mt-4">
         <div class="d-flex justify-content-between mb-3">
             {% if user.is_authenticated or user.is_superuser %}

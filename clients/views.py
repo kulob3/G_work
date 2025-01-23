@@ -4,6 +4,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from clients.forms import ClientForm
 from clients.models import Client
 from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404
 
 
 class ClientListView(LoginRequiredMixin, ListView):
@@ -15,6 +16,10 @@ class ClientListView(LoginRequiredMixin, ListView):
 
 class ClientDetailView(LoginRequiredMixin, DetailView):
     model = Client
+
+    def get_object(self):
+        pk = self.kwargs.get('pk')
+        return get_object_or_404(Client, pk=pk)
 
 class ClientCreateView(LoginRequiredMixin, CreateView):
     model = Client

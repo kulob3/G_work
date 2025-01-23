@@ -3,6 +3,10 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from appointment.forms import AppointmentForm
 from appointment.models import Appointment
+from django.shortcuts import get_object_or_404
+
+from clients.models import Client
+
 
 class AppointmentListView(LoginRequiredMixin, ListView):
     model = Appointment
@@ -21,7 +25,9 @@ class AppointmentCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('appointment:appointment_list')
 
     def form_valid(self, form):
-        form.instance.client = self.request.user
+        user = self.request.user
+        client = get_object_or_404(Client, email=user)  # Ищем по объекту User, а не строке email
+        form.instance.client = client
         form.instance.price = form.cleaned_data['service']
         return super().form_valid(form)
 

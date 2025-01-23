@@ -1,6 +1,5 @@
 {% extends "sending/base.html" %}
 {% load clients_filter %}
-
 {% block content %}
         {% if user.is_authenticated %}
         <div class="d-flex justify-content-center mb-4">
@@ -21,11 +20,11 @@
         {% endfor %}
     {% else %}
         {% for object in object_list %}
-            {% if object.owner == email %}
+            {% if object.client %}
                 <div class="card mb-4 box-shadow">
                     <div class="card-header">
                         <h4 class="my-0 font-weight-normal">{{ object.name }}</h4>
-                        <a href="{% url 'clients:client_view' object.pk %}" class="btn btn-lg btn-block btn-outline-primary">Просмотр</a>
+                        <a href="{% url 'appointment:appointment_view' object.pk %}" class="btn btn-lg btn-block btn-outline-primary">Просмотр</a>
                     </div>
                 </div>
             {% endif %}
