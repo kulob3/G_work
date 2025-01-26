@@ -15,7 +15,16 @@ class StyleFormMixin:
 class AppointmentForm(StyleFormMixin, ModelForm):
     class Meta:
         model = Appointment
-        exclude = ['name', 'client', 'appointment_number_int', 'price']
+        exclude = ['name', 'client', 'appointment_number_int', 'price', 'status']
+        widgets = {
+            'date': DateInput(attrs={'type': 'date'}),
+            'time': TimeInput(attrs={'type': 'time'}),
+        }
+
+class AdminAppointmentForm(StyleFormMixin, ModelForm):
+    class Meta:
+        model = Appointment
+        exclude = ['appointment_number_int']
         widgets = {
             'date': DateInput(attrs={'type': 'date'}),
             'time': TimeInput(attrs={'type': 'time'}),

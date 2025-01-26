@@ -1,5 +1,5 @@
 {% extends 'sending/base.html' %}
-{% load blog_filter %}
+{% load appointment_filter %}
 {% block content %}
 
     <div class="card">
@@ -14,8 +14,14 @@
             <p> Результат: {{ object.result }}</p>
         </div>
         <div class="card-footer">
+            {% if user.is_superuser or user|has_manager_perms %}
             <a href="{% url 'appointment:appointment_edit' object.pk %}" class="btn btn-secondary">Редактировать</a>
             <a href="{% url 'appointment:appointment_delete' object.pk %}" class="btn btn-danger">Удалить</a>
+            <a href="{% url 'appointment:appointment_confirm' object.pk %}" class="btn btn-success" {% if object|is_confirmed %}disabled{% endif %}>Подтвердить</a>
+            {% endif %}
+            {% if object.client %}
+            <a href="{% url 'appointment:appointment_cancel' object.pk %}" class="btn btn-warning">Отменить</a>
+            {% endif %}
             <a href="{% url 'appointment:appointment_list' %}" class="btn btn-outline-dark">Назад</a>
         </div>
     </div>

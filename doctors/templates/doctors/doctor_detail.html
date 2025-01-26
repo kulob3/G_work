@@ -10,8 +10,10 @@
             {% endif %}
         </div>
         <div class="card-footer">
-            <a href="{% url 'doctors:doctor_edit' object.pk %}" class="btn btn-secondary">Редактировать</a>
-            <a href="{% url 'doctors:doctor_delete' object.pk %}" class="btn btn-danger">Удалить</a>
+            {% if can_edit %}
+                <a href="{% url 'doctors:doctor_edit' object.pk %}" class="btn btn-secondary">Редактировать</a>
+                <a href="{% url 'doctors:doctor_delete' object.pk %}" class="btn btn-danger">Удалить</a>
+            {% endif %}
             <a href="{% url 'doctors:doctor_list' %}" class="btn btn-primary">Назад</a>
         </div>
     </div>

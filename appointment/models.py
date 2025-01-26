@@ -1,14 +1,14 @@
 from django.db import models
+from dirtyfields import DirtyFieldsMixin
 from config.settings import NULLABLE, APPOINTMENT_STATUS_CHOICES
 from doctors.models import Doctor
 from service.models import Service
 from clients.models import Client
 
-# Функция для default
 def default_appointment_name():
     return 'Запись на прием'
 
-class Appointment(models.Model):
+class Appointment(DirtyFieldsMixin, models.Model):
     name = models.CharField(max_length=150, verbose_name='Наименование', default=default_appointment_name)
     client = models.ForeignKey('clients.Client', on_delete=models.CASCADE, verbose_name='Клиент')
     service = models.ForeignKey(Service, on_delete=models.CASCADE, verbose_name='Услуга')
@@ -28,9 +28,8 @@ class Appointment(models.Model):
         return f'{self.client} - {self.date}'
 
     def save(self, *args, **kwargs):
-        # Добавляем ID к имени только после сохранения
         if not self.name or self.name == 'Запись на прием':
-            super().save(*args, **kwargs)  # Сначала сохраняем объект, чтобы получить ID
+            super().save(*args, **kwargs)
             self.name = f'Запись на прием {self.id}'
         super().save(*args, **kwargs)
 

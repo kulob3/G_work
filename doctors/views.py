@@ -6,7 +6,7 @@ from doctors.forms import DoctorForm
 from doctors.models import Doctor
 
 
-class DoctorListView(LoginRequiredMixin, ListView):
+class DoctorListView(ListView):
     model = Doctor
     template_name = 'doctors/doctor_list.html'
 
@@ -14,8 +14,15 @@ class DoctorListView(LoginRequiredMixin, ListView):
         return Doctor.objects.all()
 
 
-class DoctorDetailView(LoginRequiredMixin, DetailView):
+class DoctorDetailView(DetailView):
     model = Doctor
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        context['can_edit'] = user.is_authenticated and (
+                    user.is_superuser or user.has_perm('app_name.manager_permission'))
+        return context
 
 
 class DoctorCreateView(LoginRequiredMixin, CreateView):
