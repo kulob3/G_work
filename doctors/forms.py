@@ -12,8 +12,6 @@ class StyleFormMixin:
                 field.widget.attrs['class'] = 'form-control'
 
 
-
-
 class DoctorForm(StyleFormMixin, ModelForm):
     class Meta:
         model = Doctor
