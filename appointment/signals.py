@@ -6,6 +6,7 @@ from appointment.models import Appointment
 
 @receiver(post_save, sender=Appointment)
 def send_status_change_email(sender, instance, **kwargs):
+    """ Отправка письма при изменении статуса приема """
     if 'status' in instance.get_dirty_fields():
         user_email = instance.client.email.email  # Fetch email from related User model
         send_mail(

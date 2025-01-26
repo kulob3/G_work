@@ -64,6 +64,7 @@ class AppointmentDeleteView(LoginRequiredMixin, DeleteView):
     }
 
 def cancel_appointment(request, pk):
+    """Функция отмены приема"""
     appointment = get_object_or_404(Appointment, pk=pk)
     appointment.status = 'Отменен'
     appointment.save()
@@ -72,6 +73,7 @@ def cancel_appointment(request, pk):
 
 
 def confirm_appointment(request, pk):
+    """Функция подтверждения приема менеджером"""
     appointment = get_object_or_404(Appointment, pk=pk)
     appointment.status = 'Подтвержден'
     appointment.save()

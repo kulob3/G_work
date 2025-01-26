@@ -22,14 +22,6 @@ class ServiceCreateView(LoginRequiredMixin, CreateView):
     form_class = ServiceForm
     success_url = reverse_lazy('service:service_list')
 
-    # def form_valid(self, form):
-    #     form.instance.owner = self.request.user
-    #     if form.is_valid():
-    #         new_service = form.save(commit=False)
-    #         new_service.slug = slugify(new_.email)
-    #         new_doctor.save()
-    #     return super().form_valid(form)
-
 
 class ServiceUpdateView(LoginRequiredMixin, UpdateView):
     model = Service

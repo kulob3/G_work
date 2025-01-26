@@ -80,8 +80,6 @@ class SendingCreateView(LoginRequiredMixin, CreateView):
         return form
 
 
-
-
 class SendingUpdateView(LoginRequiredMixin, UpdateView):
     model = Sending
     form_class = SendingForm
@@ -112,7 +110,7 @@ class SendingDeleteView(DeleteView):
     }
 
 def home(request):
-    """Получение общей информации для главной страницы"""
+    """Получение общей информации для главной страницы и обработка формы обратной связи"""
     total_mailings = Sending.objects.count()
     active_mailings = Sending.objects.filter(status='active').count()
     unique_clients = Client.objects.distinct().count()
@@ -129,7 +127,7 @@ def home(request):
             send_mail(
                 f'Feedback from {name}',
                 message,
-                '9272060714@mail.ru',  # Ensure this matches EMAIL_HOST_USER
+                '9272060714@mail.ru',
                 ['kulob3@yandex.ru'],
                 fail_silently=False,
             )
@@ -151,6 +149,7 @@ def home(request):
 
 
 def contacts(request):
+    """Функция страницы контактов и формы обратной связи"""
     if request.method == 'POST':
         form = FeedbackForm(request.POST)
         if form.is_valid():
@@ -160,7 +159,7 @@ def contacts(request):
             send_mail(
                 f'Feedback from {name}',
                 message,
-                '9272060714@mail.ru',  # Ensure this matches EMAIL_HOST_USER
+                '9272060714@mail.ru',
                 ['kulob3@yandex.ru'],
                 fail_silently=False,
             )

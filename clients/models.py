@@ -21,6 +21,7 @@ class Client(models.Model):
 
 @receiver(post_save, sender=User)
 def create_or_update_client(sender, instance, created, **kwargs):
+    """Функция создания или обновления клиента. Вызывается при создании или обновлении пользователя."""
     if created:
         Client.objects.create(
             email=instance,
