@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.utils.text import slugify
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -14,6 +14,9 @@ from sending.forms import SendingForm, SendingManagerForm
 from sending.models import Sending, MailingStatus
 from sending.services import send_mailing
 from service.models import Service
+from django.shortcuts import render
+from .forms import FeedbackForm
+from django.core.mail import send_mail
 
 
 @csrf_exempt
@@ -117,12 +120,55 @@ def home(request):
     total_doctors = Doctor.objects.count()
     total_services = Service.objects.count()
 
+    if request.method == 'POST':
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            message = form.cleaned_data['message']
+            send_mail(
+                f'Feedback from {name}',
+                message,
+                '9272060714@mail.ru',  # Ensure this matches EMAIL_HOST_USER
+                ['kulob3@yandex.ru'],
+                fail_silently=False,
+            )
+            return redirect('home')
+    else:
+        form = FeedbackForm()
+
     context = {
         'total_mailings': total_mailings,
         'active_mailings': active_mailings,
         'unique_clients': unique_clients,
         'random_articles': random_articles,
-        'total_doctors': total_doctors,  # Add total_doctors to the context
-        'total_services': total_services,  # Add total_services to the context
+        'total_doctors': total_doctors,
+        'total_services': total_services,
+        'form': form,
     }
     return render(request, 'sending/home.html', context)
+
+
+
+def contacts(request):
+    if request.method == 'POST':
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            message = form.cleaned_data['message']
+            send_mail(
+                f'Feedback from {name}',
+                message,
+                '9272060714@mail.ru',  # Ensure this matches EMAIL_HOST_USER
+                ['kulob3@yandex.ru'],
+                fail_silently=False,
+            )
+            return redirect('contacts')
+    else:
+        form = FeedbackForm()
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'sending/contacts.html', context)

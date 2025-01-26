@@ -1,0 +1,33 @@
+{% extends "sending/base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h1>Контакты</h1>
+    <p><strong>Адрес компании:</strong> ул. Примерная, д. 1, г. Москва, Россия</p>
+    <p><strong>Контактные телефоны:</strong> +7 (123) 456-78-90</p>
+    <p><strong>Email:</strong> info@example.com</p>
+
+    <h2>Карта проезда</h2>
+    <div id="map" style="height: 400px; width: 100%;"></div>
+    <script>
+        function initMap() {
+            var companyLocation = {lat: 55.7558, lng: 37.6173};  // Example coordinates for Moscow
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15,
+                center: companyLocation
+            });
+            var marker = new google.maps.Marker({
+                position: companyLocation,
+                map: map
+            });
+        }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
+
+    <h2>Обратная связь</h2>
+    <form method="post" action="">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Отправить</button>
+    </form>
+</div>
+{% endblock %}

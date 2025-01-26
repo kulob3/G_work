@@ -1,5 +1,5 @@
 from django.forms import ModelForm, BooleanField
-
+from django import forms
 from sending.models import Sending
 
 
@@ -24,3 +24,8 @@ class SendingManagerForm(StyleFormMixin, ModelForm):
     class Meta:
         model = Sending
         fields = ['status']
+
+class FeedbackForm(forms.Form):
+    name = forms.CharField(max_length=100, label='Ваше имя')
+    email = forms.EmailField(label='Ваш email')
+    message = forms.CharField(widget=forms.Textarea, label='Сообщение')
