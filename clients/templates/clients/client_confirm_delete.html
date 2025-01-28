@@ -9,7 +9,7 @@
             </div>
             <h4>Удалить {{ object.first_name }} {{ object.last_name }}?</h4>
             <button type="submit" class="btn btn-primary">Да</button>
-            <a class="btn btn-primary" href="{% url 'client:client_view' object.pk %}">Нет</a>
+            <a class="btn btn-primary" href="{% url 'clients:client_view' object.pk %}">Нет</a>
         </form>
     </div>
 {% endblock %}

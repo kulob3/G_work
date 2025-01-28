@@ -21,16 +21,17 @@ class Client(models.Model):
 
 @receiver(post_save, sender=User)
 def create_or_update_client(sender, instance, created, **kwargs):
-    """Функция создания или обновления клиента. Вызывается при создании или обновлении пользователя."""
+    """Функция создания или обновления клиента."""
     if created:
         Client.objects.create(
             email=instance,
-            first_name=instance.first_name,
-            last_name=instance.last_name
+            first_name=instance.first_name or '',
+            last_name=instance.last_name or ''
         )
     else:
         client = Client.objects.filter(email=instance).first()
         if client:
-            client.first_name = instance.first_name
-            client.last_name = instance.last_name
+            client.first_name = instance.first_name or client.first_name
+            client.last_name = instance.last_name or client.last_name
             client.save()
+
