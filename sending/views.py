@@ -67,16 +67,12 @@ class SendingCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('sending:sending_list')
 
     def form_valid(self, form):
-        form.instance.owner = self.request.user  # Set the owner to the current user
-        if form.is_valid():
-            new_sending = form.save(commit=False)
-            new_sending.slug = slugify(new_sending.name)
-            new_sending.save()
+        form.instance.owner = self.request.user
         return super().form_valid(form)
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        form.fields['clients'].queryset = Client.objects.filter(owner=self.request.user)
+        form.fields['clients'].queryset = Client.objects.filter(email=self.request.user)  # убираем .email
         return form
 
 
@@ -88,10 +84,12 @@ class SendingUpdateView(LoginRequiredMixin, UpdateView):
         return reverse('sending:sending_view', args=[self.kwargs.get('pk')])
 
     def form_valid(self, form):
-        if form.is_valid():
-            new_blog = form.save()
-            new_blog.slug = slugify(new_blog.name)
-            new_blog.save()
+        sending = form.save(commit=False)
+        if not sending.owner:
+            sending.owner = self.request.user
+        sending.slug = slugify(sending.name)
+        sending.save()
+        form.save_m2m()
         return super().form_valid(form)
 
     def get_form_class(self):

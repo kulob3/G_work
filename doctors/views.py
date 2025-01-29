@@ -34,15 +34,15 @@ class DoctorCreateView(LoginRequiredMixin, CreateView):
 class DoctorUpdateView(LoginRequiredMixin, UpdateView):
     model = Doctor
     form_class = DoctorForm
+    success_url = reverse_lazy('doctors:doctor_list')
 
     def get_success_url(self):
         return reverse('doctors:doctor_view', args=[self.kwargs.get('pk')])
 
     def form_valid(self, form):
-        if form.is_valid():
-            new_doctor = form.save()
-            new_doctor.slug = slugify(new_doctor.email)
-            new_doctor.save()
+        new_doctor = form.save(commit=False)
+        new_doctor.slug = slugify(f"{new_doctor.first_name}-{new_doctor.last_name}")  # исправили
+        new_doctor.save()
         return super().form_valid(form)
 
 

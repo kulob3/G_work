@@ -1,139 +1,128 @@
 import pytest
+from django.urls import reverse
 from django.contrib.auth import get_user_model
-from datetime import date, time
 from appointment.models import Appointment
 from clients.models import Client
 from service.models import Service
-from users.models import User
+
+User = get_user_model()
+
+@pytest.mark.django_db
+def test_appointment_list_view(client):
+    """Тест просмотра списка приемов."""
+    user = User.objects.create_user(email='test@example.com', password='password', is_superuser=True)
+    client.force_login(user)
+    client_obj, _ = Client.objects.get_or_create(email=user)
+    service = Service.objects.create(name="Тестовая услуга", price=1500)
+    appointment = Appointment.objects.create(
+        name="Тестовый прием",
+        client=client_obj,
+        service=service,
+        price=service,
+        date="2025-02-01",
+        time="12:00:00",
+        status="Новый"
+    )
+    response = client.get(reverse('appointment:appointment_list'))
+    content = response.content.decode()
+    assert response.status_code == 200
+    assert "Запись на прием" in content
+    assert "Просмотр" in content
 
 
-# @pytest.mark.django_db
-# class TestAppointmentModel:
-#
-#     @pytest.fixture(autouse=True)
-#     def setup_method(self, db):
-#         # Очистка таблиц перед каждым тестом
-#         User.objects.all().delete()
-#         Client.objects.all().delete()
-#         Service.objects.all().delete()
-#         Appointment.objects.all().delete()
-#
-#     def test_appointment_creation(self):
-#         """Проверяет создание объекта Appointment"""
-#
-#         # Создаем пользователя (User), указав поле username, так как оно обязательно
-#         user, created = get_user_model().objects.get_or_create(
-#             email="test@example.com",
-#             defaults={"first_name": "Test", "last_name": "User", "password": "password123"}
-#         )
-#
-#         # Создаем клиента (Client), привязанный к User
-#         client, created = Client.objects.get_or_create(
-#             email=user,  # Здесь мы передаем объект User, а не 'user'
-#             defaults={
-#                 "first_name": "Test",
-#                 "last_name": "Client",
-#                 "gender": "M",
-#                 "date_of_birth": date(1990, 1, 1),
-#             }
-#         )
-#
-#         # Создаем услугу (Service)
-#         service = Service.objects.create(name="Test Service", price=100)
-#
-#         # Создаем запись о приеме (Appointment)
-#         appointment = Appointment.objects.create(
-#             client=client,
-#             service=service,
-#             date=date.today(),
-#             time=time(10, 0),
-#             status="Новый",
-#             price=service  # Ensure price is set to a numeric value
-#         )
-#
-#         # Проверяем корректность строки объекта
-#         assert str(appointment) == f"{client} - {appointment.date}"
+@pytest.mark.django_db
+def test_appointment_detail_view(client):
+    """Тест просмотра детальной страницы приема."""
+    user = User.objects.create_user(email='test@example.com', password='password')
+    client.force_login(user)
+    client_obj, _ = Client.objects.get_or_create(email=user)
+    service = Service.objects.create(name="Тестовая услуга", price=1500)
+    appointment = Appointment.objects.create(
+        name="Тестовый прием",
+        client=client_obj,
+        service=service,
+        price=service,
+        date="2025-02-01",
+        time="12:00:00",
+        status="Новый"
+    )
+    response = client.get(reverse('appointment:appointment_view', args=[appointment.pk]))
+    assert response.status_code == 200
+    assert "Тестовый прием" in response.content.decode()
+    assert "Тестовая услуга" in response.content.decode()
 
-# @pytest.mark.django_db
-# class TestAppointmentViews:
-#     def setup_method(self):
-#         """Создание данных для тестов"""
-#         self.client = Client()
-#         self.user = get_user_model().objects.create_user(username="testuser", password="password")
-#         self.service = Service.objects.create(name="Test Service", price=100)
-#         self.client_model = ClientModel.objects.create(email="testuser@example.com", full_name="Test Client")
-#         self.appointment = Appointment.objects.create(
-#             client=self.client_model,
-#             service=self.service,
-#             date=date.today(),
-#             time=time(10, 0),
-#             status="Новый",
-#         )
-#
-#     def test_appointment_list_view(self):
-#         """Тестирует доступ к списку приемов"""
-#         self.client.login(username="testuser", password="password")
-#         response = self.client.get(reverse("appointment:appointment_list"))
-#         assert response.status_code == 200
-#         assert "appointment_list" in response.context
-#
-#     def test_appointment_create_view(self):
-#         """Тестирует создание записи на прием"""
-#         self.client.login(username="testuser", password="password")
-#         data = {
-#             "service": self.service.id,
-#             "date": date.today(),
-#             "time": time(12, 0),
-#         }
-#         response = self.client.post(reverse("appointment:appointment_create"), data)
-#         assert response.status_code == 302  # Redirect to list view
-#         assert Appointment.objects.count() == 2  # Новый объект создан
-#
-#     def test_appointment_update_view(self):
-#         """Тестирует обновление записи на прием"""
-#         self.client.login(username="testuser", password="password")
-#         data = {
-#             "service": self.service.id,
-#             "date": date.today(),
-#             "time": time(14, 0),
-#             "status": "Подтвержден",
-#         }
-#         response = self.client.post(
-#             reverse("appointment:appointment_edit", kwargs={"pk": self.appointment.id}),
-#             data,
-#         )
-#         assert response.status_code == 302
-#         self.appointment.refresh_from_db()
-#         assert self.appointment.status == "Подтвержден"
-#
-#     def test_appointment_delete_view(self):
-#         """Тестирует удаление записи на прием"""
-#         self.client.login(username="testuser", password="password")
-#         response = self.client.post(
-#             reverse("appointment:appointment_delete", kwargs={"pk": self.appointment.id})
-#         )
-#         assert response.status_code == 302
-#         assert Appointment.objects.count() == 0
-#
-#
-# @pytest.mark.django_db
-# class TestAppointmentForms:
-#     def test_valid_appointment_form(self):
-#         """Проверяет корректность формы AppointmentForm"""
-#         service = Service.objects.create(name="Test Service", price=100)
-#         data = {
-#             "service": service.id,
-#             "date": date.today(),
-#             "time": time(10, 0),
-#         }
-#         form = AppointmentForm(data=data)
-#         assert form.is_valid()
-#
-#     def test_invalid_appointment_form(self):
-#         """Проверяет некорректные данные в форме AppointmentForm"""
-#         data = {
-#             "date": "invalid_date",
-#             "time": "invalid_time",
-#         }
-#         form = AppointmentForm(data=data)
-#         assert not form.is_valid()
+@pytest.mark.django_db
+def test_appointment_create_view(client):
+    """Тест создания нового приема."""
+    user = User.objects.create_user(email='test@example.com', password='password')
+    client.force_login(user)
+    client_obj, _ = Client.objects.get_or_create(email=user)
+    service = Service.objects.create(name="Тестовая услуга", price=1500)
+    form_data = {
+        'name': 'Тестовый прием',
+        'client': client_obj.pk,
+        'service': service.pk,
+        'price': service.pk,
+        'date': '2025-02-01',
+        'time': '12:00:00',
+        'status': 'Новый'
+    }
+    response = client.post(reverse('appointment:appointment_create'), form_data, follow=True)
+    assert response.status_code == 200, f"Статус код: {response.status_code}, HTML: {response.content.decode()}"
+    appointments = list(Appointment.objects.values())
+    print("Все записи в БД:", appointments)
+    created_appointment = Appointment.objects.order_by('-id').first()
+    assert created_appointment is not None, "Запись не была создана!"
+    assert "Запись на прием" in created_appointment.name, f"Неожиданное имя: {created_appointment.name}"
+
+@pytest.mark.django_db
+def test_appointment_update_view(client):
+    """Тест обновления приема с учетом прав."""
+    user = User.objects.create_user(email='test@example.com', password='password', is_superuser=True)
+    client.force_login(user)
+    client_obj, _ = Client.objects.get_or_create(email=user)
+    service = Service.objects.create(name="Консультация", price=2000)
+    Appointment.objects.all().delete()
+    from django.db import connection
+    with connection.cursor() as cursor:
+        cursor.execute("ALTER SEQUENCE appointment_appointment_id_seq RESTART WITH 1;")
+    appointment = Appointment.objects.create(
+        client=client_obj,
+        service=service,
+        price=service,
+        date="2025-02-10",
+        time="10:30"
+    )
+    form_data = {
+        'name': appointment.name,
+        'client': client_obj.pk,
+        'service': service.pk,
+        'price': service.pk,
+        'date': "2025-02-15",
+        'time': "12:00",
+        'status': 'confirmed'
+    }
+    response = client.post(reverse('appointment:appointment_update', args=[appointment.pk]), form_data, follow=True)
+    assert response.status_code in [200, 302], f"Ошибка при редактировании: {response.content.decode()}"
+    appointment.refresh_from_db()
+    assert appointment.date.strftime("%Y-%m-%d") == "2025-02-15", "Дата приема не обновилась!"
+    assert appointment.time.strftime("%H:%M") == "12:00", "Время приема не обновилось!"
+    assert appointment.status == 'confirmed', "Статус приема не изменился!"
+
+
+
+@pytest.mark.django_db
+def test_appointment_delete_view(client):
+    """Тест удаления приема."""
+    user = User.objects.create_user(email='test@example.com', password='password')
+    client.force_login(user)
+
+    client_obj = Client.objects.create(email=user)
+    service = Service.objects.create(name="Лечение", price=3000)
+    appointment = Appointment.objects.create(client=client_obj, service=service, date="2025-02-20", time="09:00")
+
+    response = client.post(reverse('appointment:appointment_delete', args=[appointment.pk]), follow=True)
+
+    assert response.status_code == 200
+    assert not Appointment.objects.filter(pk=appointment.pk).exists()
+
