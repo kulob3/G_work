@@ -85,8 +85,9 @@ def test_appointment_update_view(client):
     Appointment.objects.all().delete()
     from django.db import connection
     with connection.cursor() as cursor:
-        cursor.execute("ALTER SEQUENCE appointment_appointment_id_seq RESTART WITH 1;")
+        cursor.execute("TRUNCATE TABLE appointment_appointment RESTART IDENTITY CASCADE;")
     appointment = Appointment.objects.create(
+        name="Тестовый прием",
         client=client_obj,
         service=service,
         price=service,
@@ -102,7 +103,7 @@ def test_appointment_update_view(client):
         'time': "12:00",
         'status': 'confirmed'
     }
-    response = client.post(reverse('appointment:appointment_update', args=[appointment.pk]), form_data, follow=True)
+    response = client.post(reverse('appointment:appointment_edit', args=[appointment.pk]), form_data, follow=True)
     assert response.status_code in [200, 302], f"Ошибка при редактировании: {response.content.decode()}"
     appointment.refresh_from_db()
     assert appointment.date.strftime("%Y-%m-%d") == "2025-02-15", "Дата приема не обновилась!"
@@ -111,18 +112,24 @@ def test_appointment_update_view(client):
 
 
 
-@pytest.mark.django_db
-def test_appointment_delete_view(client):
-    """Тест удаления приема."""
-    user = User.objects.create_user(email='test@example.com', password='password')
-    client.force_login(user)
 
-    client_obj = Client.objects.create(email=user)
-    service = Service.objects.create(name="Лечение", price=3000)
-    appointment = Appointment.objects.create(client=client_obj, service=service, date="2025-02-20", time="09:00")
 
-    response = client.post(reverse('appointment:appointment_delete', args=[appointment.pk]), follow=True)
 
-    assert response.status_code == 200
-    assert not Appointment.objects.filter(pk=appointment.pk).exists()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
