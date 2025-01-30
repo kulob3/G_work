@@ -31,25 +31,5 @@ services:
       - .:/app
     command: ["gunicorn", "--bind", "0.0.0.0:8000", "config.wsgi:application"]
 
-  celery:
-    build: .
-    restart: always
-    depends_on:
-      - redis
-      - web
-    env_file:
-      - .env
-    command: ["celery", "-A", "config", "worker", "--loglevel=info"]
-
-  celery-beat:
-    build: .
-    restart: always
-    depends_on:
-      - web
-      - redis
-    env_file:
-      - .env
-    command: ["celery", "-A", "config", "beat", "--loglevel=info"]
-
 volumes:
   postgres_data:

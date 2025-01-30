@@ -4,6 +4,17 @@ version = "0.1.0"
 description = ""
 authors = ["Alex Urapin <kulob1@mail.ru>"]
 readme = "README.md"
+packages = [
+    { include = "config" },
+    { include = "blog" },
+    { include = "clients" },
+    { include = "doctors" },
+    { include = "sending" },
+    { include = "message" },
+    { include = "service" },
+    { include = "appointment" },
+    { include = "users" }
+]
 
 [tool.poetry.dependencies]
 python = "^3.12"
@@ -18,8 +29,5 @@ django-phonenumber-field = {extras = ["phonenumbers"], version = "^8.0.0"}
 register = "^0.1"
 redis = "^5.2.0"
 python-dotenv = "^1.0.1"
-
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+gunicorn = "^23.0.0"
+django-dirtyfields = "^1.9.5"
