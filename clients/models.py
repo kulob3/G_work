@@ -20,15 +20,9 @@ class Client(models.Model):
         verbose_name_plural = 'Клиенты'
 
 @receiver(post_save, sender=User)
-def create_or_update_client(sender, instance, created, **kwargs):
-    """Функция создания или обновления клиента."""
-    if created:
-        Client.objects.create(
-            email=instance,
-            first_name=instance.first_name or '',
-            last_name=instance.last_name or ''
-        )
-    else:
+def update_client_on_user_save(sender, instance, created, **kwargs):
+    """Обновляет данные клиента при обновлении пользователя, но не создаёт его автоматически."""
+    if not created:  # Только обновляем, но не создаём
         client = Client.objects.filter(email=instance).first()
         if client:
             client.first_name = instance.first_name or client.first_name

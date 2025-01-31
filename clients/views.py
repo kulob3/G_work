@@ -9,9 +9,19 @@ from django.shortcuts import get_object_or_404
 
 class ClientListView(LoginRequiredMixin, ListView):
     model = Client
+    template_name = "clients/client_list.html"
 
     def get_queryset(self):
-        return Client.objects.all()
+        user = self.request.user
+        if user.is_superuser or user.groups.filter(name='manager').exists():
+            return Client.objects.all()  # Админы и менеджеры видят всех
+        return Client.objects.filter(email=user)  # Клиент видит только себя
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["client"] = Client.objects.filter(email=self.request.user).first()
+        return context
+
 
 
 class ClientDetailView(LoginRequiredMixin, DetailView):
