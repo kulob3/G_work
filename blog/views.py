@@ -22,11 +22,11 @@ class BlogCreateView(LoginRequiredMixin, CreateView):
 class BlogListView(ListView):
     model = Blog
     template_name = 'blog/blog_list.html'
-    context_object_name = 'blogs'
+    context_object_name = 'object_list'  # Приводим в соответствие с шаблоном
 
-    def get_queryset(self, *args, **kwargs):
-        queryset = super().get_queryset(*args, **kwargs)
-        return queryset
+    def get_queryset(self):
+        return Blog.objects.all()  # Делаем доступными ВСЕ записи
+
 
 
 class BlogDetailView(DetailView):

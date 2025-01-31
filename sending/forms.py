@@ -1,5 +1,7 @@
 from django.forms import ModelForm, BooleanField
 from django import forms
+
+from clients.models import Client
 from sending.models import Sending
 
 
@@ -16,6 +18,11 @@ class StyleFormMixin:
 
 
 class SendingForm(StyleFormMixin, ModelForm):
+    clients = forms.ModelMultipleChoiceField(
+        queryset=Client.objects.none(),
+        widget=forms.SelectMultiple,
+        required=True
+    )
     class Meta:
         model = Sending
         fields = '__all__'
