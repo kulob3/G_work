@@ -2,14 +2,15 @@
 {% load clients_filter %}
 
 {% block content %}
-    {% if user.is_authenticated and not user.is_client %}
+    {% if user.is_authenticated and not client %}
     <div class="d-flex justify-content-center mb-4">
-        <a href="{% url 'client:client_create' %}" class="btn btn-lg btn-primary mx-2"
+        <a href="{% url 'clients:client_create' %}" class="btn btn-lg btn-primary mx-2"
            style="font-size: 1.2em; padding: 10px 20px;">
             Стать клиентом
         </a>
     </div>
-{% endif %}
+    {% endif %}
+
     {% if user.is_superuser or user|has_manager_perms %}
         {% for object in object_list %}
             <div class="card mb-4 box-shadow">
@@ -21,7 +22,7 @@
         {% endfor %}
     {% else %}
         {% for object in object_list %}
-            {% if object.client == client %}
+            {% if object == client %}
                 <div class="card mb-4 box-shadow">
                     <div class="card-header">
                         <h4 class="my-0 font-weight-normal">{{ object.first_name }} {{ object.last_name }}</h4>
@@ -32,3 +33,4 @@
         {% endfor %}
     {% endif %}
 {% endblock %}
+

@@ -1,7 +1,8 @@
 {% extends "sending/base.html" %}
 {% load appointment_filter %}
+
 {% block content %}
-        {% if user.is_authenticated %}
+    {% if user.is_authenticated %}
         <div class="d-flex justify-content-center mb-4">
             <a href="{% url 'appointment:appointment_create' %}" class="btn btn-lg btn-primary mx-2"
                style="font-size: 1.2em; padding: 10px 20px;">
@@ -9,25 +10,28 @@
             </a>
         </div>
     {% endif %}
+
     {% if user.is_superuser or user|has_manager_perms %}
         {% for object in object_list %}
             <div class="card mb-4 box-shadow">
                 <div class="card-header">
                     <h4 class="my-0 font-weight-normal">{{ object.name }}</h4>
-                    <a href="{% url 'appointment:appointment_view' object.pk %}" class="btn btn-lg btn-block btn-outline-primary">Просмотр</a>
+                    <a href="{% url 'appointment:appointment_view' object.pk %}"
+                       class="btn btn-lg btn-block btn-outline-primary">Просмотр</a>
                 </div>
             </div>
         {% endfor %}
     {% else %}
         {% for object in object_list %}
-            {% if object.client %}
-                <div class="card mb-4 box-shadow">
-                    <div class="card-header">
-                        <h4 class="my-0 font-weight-normal">{{ object.name }}</h4>
-                        <a href="{% url 'appointment:appointment_view' object.pk %}" class="btn btn-lg btn-block btn-outline-primary">Просмотр</a>
-                    </div>
-                </div>
-            {% endif %}
-        {% endfor %}
+    {% if object.client == client %}
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">{{ object.name }}</h4>
+                <a href="{% url 'appointment:appointment_view' object.pk %}"
+                   class="btn btn-lg btn-block btn-outline-primary">Просмотр</a>
+            </div>
+        </div>
+    {% endif %}
+{% endfor %}
     {% endif %}
 {% endblock %}
