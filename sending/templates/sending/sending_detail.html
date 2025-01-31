@@ -8,7 +8,7 @@
             <p> Начало отправки {{ object.datetime }}</p>
             <p> Периодичность: {{ object.period|get_period_display }}</p>
             <p> Статус: {{ object.get_status_display }}</p>
-            <p> Клиенты: {% for client in object.clients.all %}{{ client.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+            <p> Клиенты: {% for client in object.clients.all %}{{ client.email }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
             <p> Сообщение: {{ object.message }}</p>
             <p> Количество писем: {{ object.number_of_parcels }}</p>
             <p> Создано пользователем: {{ object.owner }}</p>

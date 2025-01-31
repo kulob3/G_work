@@ -72,7 +72,7 @@ class SendingCreateView(LoginRequiredMixin, CreateView):
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        form.fields['clients'].queryset = Client.objects.filter(email=self.request.user)  # убираем .email
+        form.fields['clients'].queryset = Client.objects.all()  # Показываем всех клиентов
         return form
 
 
