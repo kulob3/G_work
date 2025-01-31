@@ -92,13 +92,11 @@ class SendingUpdateView(LoginRequiredMixin, UpdateView):
         form.save_m2m()
         return super().form_valid(form)
 
-    def get_form_class(self):
-        user = self.request.user
-        if user == self.object.owner or user.is_superuser:
-            return SendingForm
-        if user.groups.filter(name='manager').exists():
-            return SendingManagerForm
-        raise PermissionDenied
+    def get_form(self, form_class=None):
+        """Обновляем queryset клиентов в форме"""
+        form = super().get_form(form_class)
+        form.fields['clients'].queryset = Client.objects.all()
+        return form
 
 class SendingDeleteView(DeleteView):
     model = Sending

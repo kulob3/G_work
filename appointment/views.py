@@ -8,11 +8,28 @@ from clients.models import Client
 from django.shortcuts import redirect
 from django.contrib import messages
 
+
 class AppointmentListView(LoginRequiredMixin, ListView):
     model = Appointment
+    template_name = "appointment/appointment_list.html"
+    context_object_name = "appointments"
 
     def get_queryset(self):
-        return Appointment.objects.all()
+        user = self.request.user
+        if user.is_superuser or user.groups.filter(name='manager').exists():
+            return Appointment.objects.all()  # Админы и менеджеры видят все записи
+
+        # Проверяем, есть ли у пользователя объект Client
+        client = Client.objects.filter(email=user).first()
+        if client:
+            return Appointment.objects.filter(client=client)  # Клиент видит только свои записи
+
+        return Appointment.objects.none()  # Если клиент не найден, ничего не показываем
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["client"] = Client.objects.filter(email=self.request.user).first()
+        return context
 
 
 class AppointmentDetailView(LoginRequiredMixin, DetailView):

@@ -135,28 +135,38 @@ def test_http_sending_create_view(client):
     assert response.status_code == 302
     assert Sending.objects.filter(name='Новая рассылка').exists()
 
-
 @pytest.mark.django_db
 def test_http_sending_update_view(client):
     """Тест HTTP-запроса на обновление рассылки."""
     user = User.objects.create_user(email='test@example.com', password='password')
     client.force_login(user)
     message = Message.objects.create(topic='Тестовое сообщение', body='Текст сообщения', owner=user)
-    sending = Sending.objects.create(name='Редактируемая рассылка', owner=user, message=message, period='weekly')
-    sending.clients.set([])
+    sending = Sending.objects.create(
+        name='Редактируемая рассылка',
+        owner=user,
+        message=message,
+        period='weekly'
+    )
     client_user = User.objects.create_user(email='client@example.com', password='password')
     client_obj, _ = Client.objects.get_or_create(email=client_user)
+    assert client_obj in Client.objects.all()
     response = client.post(reverse('sending:sending_edit', args=[sending.pk]), {
         'name': 'Обновленная рассылка',
         'message': message.pk,
         'period': 'weekly',
         'status': 'created',
         'number_of_parcels': 1,
-        'clients': [client_obj.pk]
+        'clients': [client_obj.pk]  # Передаем ID клиента
     })
+    if response.status_code == 200:
+        print(response.context['form'].errors)
     assert response.status_code == 302
     sending.refresh_from_db()
     assert sending.name == 'Обновленная рассылка'
+    assert sending.clients.count() == 1
+    assert sending.clients.first() == client_obj
+
+
 
 @pytest.mark.django_db
 def test_http_sending_delete_view(client):
